@@ -1,3 +1,4 @@
+
 <war>
 	<missileLaunchers>
 		<launcher id="L101" isHidden="false">
@@ -7,6 +8,7 @@
 		<launcher id="L102" isHidden="true">
 			<missile id="M3" destination="Ofakim" launchTime="4" flyTime="3" damage="5000"/>
 			<missile id="M4" destination="Beer-Sheva" launchTime="9" flyTime="7" damage="1000"/>
+			<missile id="M5" destination="Beer-Sheva" launchTime="9" flyTime="7" damage="1000"/>
 		</launcher>
 	</missileLaunchers>
 	<missileDestructors>
