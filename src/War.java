@@ -1,5 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
-
 import java.lang.reflect.Method;
 
 /*
@@ -16,9 +17,26 @@ import java.lang.reflect.Method;
  */
 public class War {
 
+	
+	public War()
+	{
+	//	missileLaunchers = new ArrayList<Launcher>();
+		
+	}
 	public static void main(String[] args) {
-		ReadXMLFile xml = new ReadXMLFile();
-		showMenu();
+		
+		//War WarGames = new War();
+		List<Destructor> missileDestructors = new ArrayList<Destructor>();
+		List<Destructor> missileLauncherDestructors=new ArrayList<Destructor>();
+		List<Launcher> missileLaunchers = new ArrayList<Launcher>();
+		try{
+		
+			ReadXMLFile.getData("war.xml", missileLaunchers, missileDestructors, missileLauncherDestructors);
+		} catch (Exception e)
+		{
+			
+		}
+		//showMenu();
 
 	}
 	
