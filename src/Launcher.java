@@ -7,7 +7,14 @@ public class Launcher extends Thread {
 	private List<Missile> missiles;
 	private String id;
 	private boolean isHidden;
+	private boolean isDestroyed;
 	private int destructTime;
+	
+	/**
+	 * Launcher lock
+	 */
+	public Object Lock = new Object();
+	
 	public int getDestructTime() {
 		return destructTime;
 	}
@@ -32,6 +39,7 @@ public class Launcher extends Thread {
 	public Launcher(String Id,boolean IsHidden){
 		this.id = Id;
 		this.isHidden = IsHidden;
+		isDestroyed=false;
 		missiles = new ArrayList<Missile>();
 	}
 	
@@ -41,6 +49,9 @@ public class Launcher extends Thread {
 	 */
 	public void addMissile(Missile m){
 		missiles.add(m);
+	}
+	public List<Missile> getMissiles(){
+		return missiles;
 	}
 	public Missile getMissile(String id){
 		Missile m = null;
@@ -65,10 +76,48 @@ public class Launcher extends Thread {
 		return l;
 	}
 
+	public void removeMissile(Missile m)
+	{
+		missiles.remove(m.getId());
+		
+	}
 	@Override
 	public boolean equals(Object obj) {
+
+		
 		
 		return ((String)obj).equals(id);
 	}
+
+	
+	@Override
+	/**
+	 * 
+	 */
+	public void run() {
+		
+		while (!isDestroyed){
+			for (Missile missile : missiles) {
+				if (!missile.isAlive() && !missile.isStarted()){
+					missile.setLock(Lock);
+					missile.start();
+				}
+//				synchronized (this) {
+//					try {
+//						wait();
+//					} catch (InterruptedException e) {
+//					
+//						e.printStackTrace();
+//					}
+//				}
+				
+				
+			}
+		}
+		
+
+		
+	}
+	
 	
 }

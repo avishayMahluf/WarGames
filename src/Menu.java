@@ -1,12 +1,17 @@
+import java.util.Scanner;
+
 /**
  * 
  * @author Kosta Lazarev
  *
  */
-public abstract class Menu {
+public class Menu {
 
-	
+	private War war;
 
+	public Menu(War war) {
+		this.war = war;
+	}
 	public void addMissileLauncherDestructor(){
 
 	}
@@ -19,6 +24,10 @@ public abstract class Menu {
 	}
 
 	public void addLauncher()
+	{
+
+	}
+	public void addLauncherDestructor()
 	{
 
 	}
@@ -38,7 +47,28 @@ public abstract class Menu {
 	 * Missile intercept, "takes time"
 	 */
 	public void missileIntercept(){
-
+		Scanner s = new Scanner(System.in);
+		war.updateInAirMissiles();
+		int i=1;
+		for (Missile m : war.getInAirMissiles()) {
+			System.out.println("Missile id:" + m.getMissileId() + " in flight" );
+		}
+		System.out.printf("Enter missile id to intercept: M");
+		int mId = s.nextInt();
+		
+		Missile selectedMissile =Missile.getMissileFromList(war.getInAirMissiles(),"M"+mId);
+		System.out.println("Destractors id that are availble:");
+		for (Destructor d :	war.getMissileDestructors()) {
+			System.out.println("#" + i++ +" - " + d.getDestructorId());
+		}
+		System.out.printf("Enter : #");
+		int dId = s.nextInt();
+		Destructor selectedDestractor = war.getMissileDestructors().get(dId-1);
+		if (selectedDestractor.intercept(selectedMissile))
+			System.out.println("MISSILE " + selectedMissile.getMissileId() + " INTERCEPTED!");
+		else
+			System.out.println("MISSILE " + selectedMissile.getMissileId() + " MISSED!");
+		
 	}
 	/**
 	 * Show war statistics
