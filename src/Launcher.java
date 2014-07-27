@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class Launcher extends Thread {
@@ -9,7 +11,7 @@ public class Launcher extends Thread {
 	private boolean isHidden;
 	private boolean isDestroyed;
 	private int destructTime;
-	
+	private Timer peekTimer;
 	/**
 	 * Launcher lock
 	 */
@@ -36,11 +38,42 @@ public class Launcher extends Thread {
 	}
 	
 	
-	public Launcher(String Id,boolean IsHidden){
-		this.id = Id;
-		this.isHidden = IsHidden;
+	
+	public boolean isDestroyed() {
+		return isDestroyed;
+	}
+
+	public boolean destroyLauncher(){
+		if(!isHidden){
+			isDestroyed=true;
+			return true;
+		}
+		
+		return false;
+	}
+
+	
+	public Launcher(String Id){
+		
 		isDestroyed=false;
 		missiles = new ArrayList<Missile>();
+		this.id = Id;
+		this.isHidden = true;
+		
+	}
+	
+	/**
+	 * 
+	 * @param Id
+	 * @param IsHidden
+	 */
+	public Launcher(String Id,boolean IsHidden){
+		
+		isDestroyed=false;
+		missiles = new ArrayList<Missile>();
+		this.id = Id;
+		this.isHidden = IsHidden;
+		
 	}
 	
 	/**
@@ -84,11 +117,34 @@ public class Launcher extends Thread {
 	@Override
 	public boolean equals(Object obj) {
 
+		if (obj instanceof Launcher){
+			return ((Launcher)obj).getLauncherId().equals(id);
+		}
 		
+			return ((String)obj).equals(id);
 		
-		return ((String)obj).equals(id);
 	}
-
+	/**
+	 * Makes launcher visible for attacking for random
+	 * period of time
+	 */
+	protected void peek(){
+		peekTimer = new Timer();
+		System.out.println("Launcher "+ id + " is visible");
+		isHidden=false;
+		int peekTime = 3000 + (int)(Math.random()*9000); 
+		peekTimer.scheduleAtFixedRate(new TimerTask() {
+					
+					@Override
+					public void run() {
+						isHidden=true;
+						System.out.println("Launcher "+ id + " is hidden");
+						this.cancel();
+						
+					}
+				}, peekTime, 1000);
+		
+	}
 	
 	@Override
 	/**
@@ -97,22 +153,30 @@ public class Launcher extends Thread {
 	public void run() {
 		
 		while (!isDestroyed){
+			try{
 			for (Missile missile : missiles) {
 				if (!missile.isAlive() && !missile.isStarted()){
 					missile.setLock(Lock);
 					missile.start();
+				
+					synchronized (this) {
+						try {
+							wait();
+							peek();
+						} catch (InterruptedException e) {
+						
+							e.printStackTrace();
+						}
+					}
+				
 				}
-//				synchronized (this) {
-//					try {
-//						wait();
-//					} catch (InterruptedException e) {
-//					
-//						e.printStackTrace();
-//					}
-//				}
+					
+				}
 				
-				
+			} catch (Exception e){
+				System.err.println("Launcher " + id + " reloads!");
 			}
+				
 		}
 		
 

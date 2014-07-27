@@ -106,6 +106,9 @@ public class Missile extends Thread {
 				
 			synchronized (Lock) {
 				System.out.printf("%d : Missile id %s Launched\n",War.WarTimeInSeconds, id);
+				synchronized (launcher){
+					launcher.notify();
+				}
 				missileState = State.Flying;
 				
 				sleep(flyTime * 1000);

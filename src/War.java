@@ -16,10 +16,17 @@ import com.sun.jmx.snmp.tasks.Task;
  * 
  * Main program class that lunches the system into activity
  * 
- * @author by Kosta Lazarev
+ * @author by Kosta Lazarev & Omri Glam
  * @version 16/07/2014
  */
 public class War {
+
+	public static final String CONFIG_FILE = "war.xml";
+	/**
+	 * The game works on a clock that logs events.
+	 * the tick set in mili seconds.
+	 */
+	public static final int TIMER_TICK =1000;
 	private List<Destructor> missileDestructors;
 	private List<Destructor> missileLauncherDestructors;
 	private List<Launcher> missileLaunchers ;
@@ -28,6 +35,9 @@ public class War {
 	private boolean started;
 	public static int WarTimeInSeconds;
 	
+	/**
+	 * Main war game constructor
+	 */
 	public War(){
 		WarTimeInSeconds=0;
 		missileDestructors = new ArrayList<Destructor>();
@@ -54,14 +64,22 @@ public class War {
 						}
 						
 					}
-				}, 0, 3000);
+				}, 0, TIMER_TICK);
 		started=true;
 	}
+	
+	/**
+	 * End war game, stops timer
+	 */
 	protected void endWar() {
 		// TODO Auto-generated method stub
 		
 	}
 
+	/**
+	 * Starts game
+	 * By starting all threads from config file
+	 */
 	private void startWar(){
 		startWarTimer();
 		for (Launcher mLauncer : missileLaunchers) {
@@ -73,14 +91,17 @@ public class War {
 		
 	}
 	
-
+	/**
+	 * Main functions
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		
 		War WarGames = new War();
 		
 		try{
 		
-			ReadXMLFile.getData("war.xml", WarGames.getMissileLaunchers(),
+			ReadXMLFile.getData(CONFIG_FILE, WarGames.getMissileLaunchers(),
 					WarGames.getMissileDestructors(),
 					WarGames.getMissileLauncherDestructors());
 			
@@ -93,6 +114,7 @@ public class War {
 		
 
 	}
+	
 	
 	public List<Missile> getInAirMissiles() {
 		return inAirMissiles;
@@ -108,10 +130,16 @@ public class War {
 	public List<Launcher> getMissileLaunchers() {
 		return missileLaunchers;
 	}
-	
+	/**
+	 * War started boolean
+	 * @return TRUE if war is started
+	 */
 	public boolean isStarted() {
 		return started;
 	}
+	/**
+	 * Prints menu and selections
+	 */
 	public void showMenu(){
 		String[] menuList = {"Add launcher destructor",
 				"Add missile destructor",	
@@ -163,7 +191,13 @@ public class War {
 		
 	}
 	
+	/**
+	 * Updates inAirMissile list
+	 * method goes through all launcher and checks missiles in the air
+	 * and set them in one list.
+	 */
 	public void updateInAirMissiles(){
+		inAirMissiles = new ArrayList<Missile>();
 		for (Launcher l : missileLaunchers) {
 			for (Missile missile : l.getMissiles()) {
 				if(missile.getMissileState() == Missile.State.Flying){
@@ -171,4 +205,21 @@ public class War {
 			}
 		}
 	}
+	/**
+	 * Add missile destructor to list
+	 */
+	public void addMissileDestructor(int id) {
+
+		
+		missileDestructors.add(new Destructor("D"+id));
+		
+	}
+	/**
+	 * Add launcher destructor to list
+	 */
+	public void addLauncherDestructor(String type) {
+		missileLauncherDestructors.add(new Destructor(Destructor.Type.valueOf(type)));
+	}
 }
+
+
