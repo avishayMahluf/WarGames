@@ -7,6 +7,7 @@ public class Destructor extends Thread {
 	private List<Missile> destructdMissile;
 	private Object Lock;
 	private String id;
+	private final static String DEAFULT_ID = "D00";
 	public enum Type {
 		plane, ship
 	};
@@ -14,7 +15,7 @@ public class Destructor extends Thread {
 	private Type dType;
 
 	public Destructor() {
-		this.id = "D00"; // Default id
+		this.id = DEAFULT_ID; // Default id
 		Lock = new Object();
 	}
 

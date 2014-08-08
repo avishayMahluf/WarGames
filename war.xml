@@ -27,7 +27,7 @@
 		</destructor>
 		<destructor type="ship">
 			<destructedLanucher id="L102" destructTime="8"/>
-			<destructedLanucher id="L102" destructTime="12"/>
+			
 		</destructor>
 	</missileLauncherDestructors>
 </war>

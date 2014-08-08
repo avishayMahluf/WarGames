@@ -127,8 +127,7 @@ public class ReadXMLFile {
 
 	}
 
-	private static void loadMissileLauncher(Document doc,
-			List<Launcher> missileLaunchers) {
+	private static void loadMissileLauncher(Document doc,List<Launcher> missileLaunchers) {
 		System.out.println("missileLaunchers:");
 		NodeList nLaunchers = doc.getElementsByTagName("launcher");
 		for (int i = 0; i < nLaunchers.getLength(); i++) {
