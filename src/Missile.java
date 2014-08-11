@@ -26,11 +26,15 @@ public class Missile extends Thread {
 		this.launcher=TheLauncher;
 		missileState=State.OnGround;
 	}
-	public void Intercep(){
+	
+	public boolean Intercep(){
 		if (missileState == State.Flying){
 			missileState=State.Intercepted;
+			return true;
 		}
+		return false;
 	}
+	
 	public static Missile getMissile (List<Launcher> lList,String id){
 		
 		Missile m =  null;
@@ -101,8 +105,8 @@ public class Missile extends Thread {
 	public void run() {
 		started=true;
 		try {
-			while(launcTime > War.WarTimeInSeconds)
-				sleep(1000);
+			
+			sleep(getFlyTime()*War.TIMER_TICK);
 				
 			synchronized (Lock) {
 				System.out.printf("%d : Missile id %s Launched\n",War.WarTimeInSeconds, id);
