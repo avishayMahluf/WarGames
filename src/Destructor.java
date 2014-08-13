@@ -41,6 +41,7 @@ public class Destructor extends Thread {
 	public String getDestructorId(){
 		return id;
 	}
+	
 	public void run() {
 		
 	}
