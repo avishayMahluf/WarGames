@@ -1,4 +1,3 @@
-
 <war>
 	<missileLaunchers>
 		<launcher id="L101" isHidden="false">
@@ -27,7 +26,6 @@
 		</destructor>
 		<destructor type="ship">
 			<destructedLanucher id="L102" destructTime="8"/>
-			
 		</destructor>
 	</missileLauncherDestructors>
 </war>

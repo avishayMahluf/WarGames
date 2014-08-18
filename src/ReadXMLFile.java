@@ -1,4 +1,3 @@
-
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
@@ -23,102 +22,124 @@ public class ReadXMLFile {
 		try {
 
 			Document doc = loadFile(FileName);
-			System.out.println("Load element :"+ doc.getDocumentElement().getNodeName());
+			System.out.println("Load element :"
+					+ doc.getDocumentElement().getNodeName());
 			System.out.println("----------------------------");
 			loadMissileLauncher(doc, missileLaunchers);
-			loadMissileDestructor(doc, missileDestructor,missileLaunchers);
-			loadMissileLauncherDestructor(doc, missileLauncherDestructor,missileLaunchers);
+			loadMissileDestructor(doc, missileDestructor, missileLaunchers);
+			loadMissileLauncherDestructor(doc, missileLauncherDestructor,
+					missileLaunchers);
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
-/**
- * Load XML file by file name and returns XML document
- * @param fileName
- * @return XML document
- * @throws ParserConfigurationException
- * @throws SAXException
- * @throws IOException
- */
-	private static Document loadFile(String fileName) throws ParserConfigurationException, SAXException, IOException {
+
+	/**
+	 * Load XML file by file name and returns XML document
+	 * 
+	 * @param fileName
+	 * @return XML document
+	 * @throws ParserConfigurationException
+	 * @throws SAXException
+	 * @throws IOException
+	 */
+	private static Document loadFile(String fileName)
+			throws ParserConfigurationException, SAXException, IOException {
 		File fXmlFile = new File(fileName);
-		DocumentBuilderFactory dbFactory = DocumentBuilderFactory
-				.newInstance();
+		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 		Document doc = dBuilder.parse(fXmlFile);
 		doc.getDocumentElement().normalize();
 		return doc;
 	}
-/**
- * 
- * @param doc
- * @param missileLauncherDestructor
- * @param missileLaunchers
- * @throws Exception
- */
-	private static void loadMissileLauncherDestructor(Document doc,List<Destructor> missileLauncherDestructor, List<Launcher> missileLaunchers) throws Exception {
+
+	/**
+	 * 
+	 * @param doc
+	 * @param missileLauncherDestructor
+	 * @param missileLaunchers
+	 * @throws Exception
+	 */
+	private static void loadMissileLauncherDestructor(Document doc,
+			List<Destructor> missileLauncherDestructor,
+			List<Launcher> missileLaunchers) throws Exception {
 		System.out.println("Loading missile launcher destructors");
-		Node nMissileLauncherDestructor = doc.getElementsByTagName("missileLauncherDestructors").item(0);
-		NodeList nDestructors = ((Element)nMissileLauncherDestructor).getElementsByTagName("destructor");
+		Node nMissileLauncherDestructor = doc.getElementsByTagName(
+				"missileLauncherDestructors").item(0);
+		NodeList nDestructors = ((Element) nMissileLauncherDestructor)
+				.getElementsByTagName("destructor");
 		for (int i = 0; i < nDestructors.getLength(); i++) {
-			
+
 			Destructor.Type dType;
 			Element eDestructor = (Element) nDestructors.item(i);
 			dType = Destructor.Type.valueOf(eDestructor.getAttribute("type"));
 			Destructor mDestructor = new Destructor(dType);
-			System.out.println("\nCurrent Element :" + eDestructor.getNodeName() +" type = "+dType);
-			NodeList nDestructdLauncher = eDestructor.getElementsByTagName("destructedLanucher");
-			for (int j=0;j < nDestructdLauncher.getLength();j++){
+			System.out.println("\nCurrent Element :"
+					+ eDestructor.getNodeName() + " type = " + dType);
+			NodeList nDestructdLauncher = eDestructor
+					.getElementsByTagName("destructedLanucher");
+			for (int j = 0; j < nDestructdLauncher.getLength(); j++) {
 				String dId;
 				int dDestructTime;
-				Element eDestructedLauncher = (Element) nDestructdLauncher.item(j);
-				dId= eDestructedLauncher.getAttribute("id");
-				dDestructTime = Integer.parseInt(eDestructedLauncher.getAttribute("destructTime"));
+				Element eDestructedLauncher = (Element) nDestructdLauncher
+						.item(j);
+				dId = eDestructedLauncher.getAttribute("id");
+				dDestructTime = Integer.parseInt(eDestructedLauncher
+						.getAttribute("destructTime"));
 				System.out.println("	Destructd Launcher	: " + dId);
-				System.out.println("	Destructd time		: "+dDestructTime);
-				Launcher mDestructedLauncher = Launcher.getLauncher(missileLaunchers, dId);
-				if (mDestructedLauncher != null){
+				System.out.println("	Destructd time		: " + dDestructTime);
+				Launcher mDestructedLauncher = Launcher.getLauncher(
+						missileLaunchers, dId);
+				if (mDestructedLauncher != null) {
 					mDestructedLauncher.setDestructTime(dDestructTime);
 					mDestructor.addDestructLauncher(mDestructedLauncher);
-				}else{
+				} else {
 					throw new Exception("Lanucher not found");
 				}
 			}
 			missileLauncherDestructor.add(mDestructor);
 		}
 
-
 	}
 
-	private static void loadMissileDestructor(Document doc,List<Destructor> missileDestructors, List<Launcher> missileLaunchers) throws Exception {
+	private static void loadMissileDestructor(Document doc,
+			List<Destructor> missileDestructors, List<Launcher> missileLaunchers)
+			throws Exception {
 		System.out.println("Loading missile destructors");
-		Node nMissileDestructor = doc.getElementsByTagName("missileDestructors").item(0);
-		NodeList nDestructors = ((Element)nMissileDestructor).getElementsByTagName("destructor");
+		Node nMissileDestructor = doc
+				.getElementsByTagName("missileDestructors").item(0);
+		NodeList nDestructors = ((Element) nMissileDestructor)
+				.getElementsByTagName("destructor");
 		for (int i = 0; i < nDestructors.getLength(); i++) {
-			
+
 			String dId;
-			
-			
+
 			Element eDestructor = (Element) nDestructors.item(i);
 			dId = eDestructor.getAttribute("id");
 			Destructor mDestructor = new Destructor(dId);
-			System.out.println("\nCurrent Element :" + eDestructor.getNodeName() +" id = "+dId);
-			NodeList nDestructdMissile = eDestructor.getElementsByTagName("destructdMissile");
-			for (int j=0;j < nDestructdMissile.getLength();j++){
+			System.out.println("\nCurrent Element :"
+					+ eDestructor.getNodeName() + " id = " + dId);
+			NodeList nDestructdMissile = eDestructor
+					.getElementsByTagName("destructdMissile");
+			for (int j = 0; j < nDestructdMissile.getLength(); j++) {
 				String mId;
 				int mDestructAfterLaunch;
-				Element eDestructedMissile = (Element) nDestructdMissile.item(j);
-				mId= eDestructedMissile.getAttribute("id");
-				mDestructAfterLaunch = Integer.parseInt(eDestructedMissile.getAttribute("destructAfterLaunch"));
+				Element eDestructedMissile = (Element) nDestructdMissile
+						.item(j);
+				mId = eDestructedMissile.getAttribute("id");
+				mDestructAfterLaunch = Integer.parseInt(eDestructedMissile
+						.getAttribute("destructAfterLaunch"));
 				System.out.println("	Destructd missile	: " + mId);
-				System.out.println("	Destructd time		: "+mDestructAfterLaunch);
-				Missile mDestructedMissile = Missile.getMissile(missileLaunchers, mId);
-				if (mDestructedMissile != null){
-					mDestructedMissile.setDestructAfterLaunch(mDestructAfterLaunch);
+				System.out
+						.println("	Destructd time		: " + mDestructAfterLaunch);
+				Missile mDestructedMissile = Missile.getMissile(
+						missileLaunchers, mId);
+				if (mDestructedMissile != null) {
+					mDestructedMissile
+							.setDestructAfterLaunch(mDestructAfterLaunch);
 					mDestructor.addDestructMissile(mDestructedMissile);
-				}else{
+				} else {
 					throw new Exception("Missile not found");
 				}
 			}
@@ -127,7 +148,8 @@ public class ReadXMLFile {
 
 	}
 
-	private static void loadMissileLauncher(Document doc,List<Launcher> missileLaunchers) {
+	private static void loadMissileLauncher(Document doc,
+			List<Launcher> missileLaunchers) {
 		System.out.println("missileLaunchers:");
 		NodeList nLaunchers = doc.getElementsByTagName("launcher");
 		for (int i = 0; i < nLaunchers.getLength(); i++) {
@@ -159,7 +181,7 @@ public class ReadXMLFile {
 					mDamage = Integer.parseInt(((Element) (nMissiles.item(j)))
 							.getAttribute("damage"));
 					launcher.addMissile(new Missile(mId, mDestination,
-							mLaunchTime, mFlyTime, mDamage,launcher));
+							mLaunchTime, mFlyTime, mDamage, launcher));
 
 					System.out.println("missile : " + mId);
 					System.out.println("	destination	:	 " + mDestination);

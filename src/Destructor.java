@@ -9,6 +9,7 @@ public class Destructor extends Thread {
 	private Object LockLuncher;
 	private String id;
 	private final static String DEAFULT_ID = "D00";
+
 	public enum Type {
 		plane, ship
 	};
@@ -41,20 +42,20 @@ public class Destructor extends Thread {
 	public void addDestructMissile(Missile m) {
 		destructdMissile.add(m);
 	}
-	public String getDestructorId(){
+
+	public String getDestructorId() {
 		return id;
 	}
-	
+
 	public void run() {
-		
-		
+
 	}
 
 	public boolean intercept(Missile m) {
 
-		if(m.getMissileState() == Missile.State.Flying){
+		if (m.getMissileState() == Missile.State.Flying) {
 			m.Intercep();
-			if (m.getMissileState() == Missile.State.Intercepted){
+			if (m.getMissileState() == Missile.State.Intercepted) {
 				return true;
 			}
 		}

@@ -11,7 +11,6 @@ import com.sun.jmx.snmp.tasks.Task;
  * WarGames main class
  */
 
-
 /**
  * 
  * Main program class that lunches the system into activity
@@ -23,64 +22,63 @@ public class War {
 
 	public static final String CONFIG_FILE = "war.xml";
 	/**
-	 * The game works on a clock that logs events.
-	 * the tick set in mili seconds.
+	 * The game works on a clock that logs events. the tick set in mili seconds.
 	 */
-	public static final int TIMER_TICK =1000;
+	public static final int TIMER_TICK = 1000;
 	private List<Destructor> missileDestructors;
 	private List<Destructor> missileLauncherDestructors;
-	private List<Launcher> missileLaunchers ;
+	private List<Launcher> missileLaunchers;
 	private List<Missile> inAirMissiles;
 	private Timer WarTimer;
 	private boolean started;
 	public static int WarTimeInSeconds;
-	
+
 	/**
 	 * Main war game constructor
 	 */
-	public War(){
-		WarTimeInSeconds=0;
+	public War() {
+		WarTimeInSeconds = 0;
 		missileDestructors = new ArrayList<Destructor>();
-		missileLauncherDestructors=new ArrayList<Destructor>();
+		missileLauncherDestructors = new ArrayList<Destructor>();
 		missileLaunchers = new ArrayList<Launcher>();
 		inAirMissiles = new ArrayList<Missile>();
 		WarTimer = new Timer();
-		started=false;
-		
+		started = false;
+
 	}
+
 	/**
 	 * Start seconds counting
 	 */
-	protected void startWarTimer(){
+	protected void startWarTimer() {
 		System.out.println("War Clock Started");
 		WarTimer.scheduleAtFixedRate(new TimerTask() {
-					
-					@Override
-					public void run() {
-						WarTimeInSeconds++;
-						//System.out.println(WarTimeInSeconds);
-						if (WarTimeInSeconds==Integer.MAX_VALUE){
-							endWar();
-						}
-						
-					}
-				}, 0, TIMER_TICK);
-		started=true;
+
+			@Override
+			public void run() {
+				WarTimeInSeconds++;
+				// System.out.println(WarTimeInSeconds);
+				if (WarTimeInSeconds == Integer.MAX_VALUE) {
+					endWar();
+				}
+
+			}
+		}, 0, TIMER_TICK);
+		started = true;
 	}
-	
+
 	/**
 	 * End war game, stops timer
 	 */
 	protected void endWar() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/**
-	 * Starts game
-	 * By starting all threads from config file
+	 * Starts game By starting all threads from config file
 	 */
-	private void startWar(){
+	private void startWar() {
 		startWarTimer();
 		for (Launcher mLauncer : missileLaunchers) {
 			mLauncer.start();
@@ -88,37 +86,39 @@ public class War {
 		for (Destructor destructor : missileDestructors) {
 			destructor.start();
 		}
-		
+
 	}
-	
+
 	/**
 	 * Main functions
+	 * 
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		
+
 		War WarGames = new War();
-		
-		try{
-		
+
+		try {
+
 			ReadXMLFile.getData(CONFIG_FILE, WarGames.getMissileLaunchers(),
 					WarGames.getMissileDestructors(),
 					WarGames.getMissileLauncherDestructors());
-			
+
 			WarGames.startWar();
 			WarGames.showMenu();
-		} catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 
 	}
-	
-	
+/**
+ * Missiles that are in the air right now
+ * @return
+ */
 	public List<Missile> getInAirMissiles() {
 		return inAirMissiles;
 	}
+
 	public List<Destructor> getMissileDestructors() {
 		return missileDestructors;
 	}
@@ -130,31 +130,30 @@ public class War {
 	public List<Launcher> getMissileLaunchers() {
 		return missileLaunchers;
 	}
+
 	/**
 	 * War started boolean
+	 * 
 	 * @return TRUE if war is started
 	 */
 	public boolean isStarted() {
 		return started;
 	}
+
 	/**
 	 * Prints menu and selections
 	 */
-	public void showMenu(){
-		String[] menuList = {"Add launcher destructor",
-				"Add missile destructor",	
-				"Add launcher",
-				"Launch missile",
-				"Intercept launcher",
-				"Intercept missile",
-				"Show statistics",
-				"End war game"};
-				
+	public void showMenu() {
+		String[] menuList = { "Add launcher destructor",
+				"Add missile destructor", "Add launcher", "Launch missile",
+				"Intercept launcher", "Intercept missile", "Show statistics",
+				"End war game" };
+
 		Menu function = new Menu(this);
 		Scanner s = new Scanner(System.in);
-		while(this.isStarted()){
-			for(int i=0; i < menuList.length ; i++){
-				System.out.println((i+1) +" - " + menuList[i]);
+		while (this.isStarted()) {
+			for (int i = 0; i < menuList.length; i++) {
+				System.out.println((i + 1) + " - " + menuList[i]);
 			}
 			int action = s.nextInt();
 			switch (action) {
@@ -183,43 +182,42 @@ public class War {
 				function.endWarGame();
 				break;
 
-
 			default:
 				break;
 			}
 		}
-		
+
 	}
-	
+
 	/**
-	 * Updates inAirMissile list
-	 * method goes through all launcher and checks missiles in the air
-	 * and set them in one list.
+	 * Updates inAirMissile list method goes through all launcher and checks
+	 * missiles in the air and set them in one list.
 	 */
-	public void updateInAirMissiles(){
+	public void updateInAirMissiles() {
 		inAirMissiles = new ArrayList<Missile>();
 		for (Launcher l : missileLaunchers) {
 			for (Missile missile : l.getMissiles()) {
-				if(missile.getMissileState() == Missile.State.Flying){
-					inAirMissiles.add(missile);				}
+				if (missile.getMissileState() == Missile.State.Flying) {
+					inAirMissiles.add(missile);
+				}
 			}
 		}
 	}
+
 	/**
 	 * Add missile destructor to list
 	 */
 	public void addMissileDestructor(int id) {
 
-		
-		missileDestructors.add(new Destructor("D"+id));
-		
+		missileDestructors.add(new Destructor("D" + id));
+
 	}
+
 	/**
 	 * Add launcher destructor to list
 	 */
 	public void addLauncherDestructor(String type) {
-		missileLauncherDestructors.add(new Destructor(Destructor.Type.valueOf(type)));
+		missileLauncherDestructors.add(new Destructor(Destructor.Type
+				.valueOf(type)));
 	}
 }
-
-

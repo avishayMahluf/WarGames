@@ -2,7 +2,10 @@ import java.util.List;
 import java.util.Comparator;
 
 public class Missile extends Thread {
-	public enum State {OnGround,Flying,Intercepted,Hit}
+	public enum State {
+		OnGround, Flying, Intercepted, Hit
+	}
+
 	private State missileState;
 	private String id;
 	private String destination;
@@ -13,35 +16,37 @@ public class Missile extends Thread {
 	private Object Lock;
 	private boolean started;
 	private Launcher launcher;
-	
+
 	public boolean isStarted() {
 		return started;
 	}
-	public Missile(String Id,String Destination, int LaunchTime,int FlyTime,int Damage,Launcher TheLauncher){
+
+	public Missile(String Id, String Destination, int LaunchTime, int FlyTime,
+			int Damage, Launcher TheLauncher) {
 		this.id = Id;
 		this.launcTime = LaunchTime;
 		this.flyTime = FlyTime;
 		this.damage = Damage;
 		this.destination = Destination;
-		this.launcher=TheLauncher;
-		missileState=State.OnGround;
+		this.launcher = TheLauncher;
+		missileState = State.OnGround;
 	}
 
-	public boolean Intercep(){
-		if (missileState == State.Flying){
-			missileState=State.Intercepted;
+	public boolean Intercep() {
+		if (missileState == State.Flying) {
+			missileState = State.Intercepted;
 			interrupt();
 			return true;
 		}
 		return false;
 	}
-	
-	public static Missile getMissile (List<Launcher> lList,String id){
-		
-		Missile m =  null;
+
+	public static Missile getMissile(List<Launcher> lList, String id) {
+
+		Missile m = null;
 		for (Launcher launcher : lList) {
 			m = launcher.getMissile(id);
-			if ( m != null)
+			if (m != null)
 				return m;
 		}
 		return m;
@@ -77,85 +82,101 @@ public class Missile extends Thread {
 
 	@Override
 	public boolean equals(Object id) {
-		
-		return this.id.equals(((String)id));
+
+		return this.id.equals(((String) id));
 	}
+
 	/**
 	 * Returns current missile state
 	 * 
 	 * @return OnGround,Flying,Intercepted,Hit
 	 */
-	public State getMissileState(){
+	public State getMissileState() {
 		return missileState;
 	}
 
 	public void setLock(Object lock) {
-		this.Lock =lock;
-		
+		this.Lock = lock;
+
 	}
-	
-	public static Missile getMissileFromList(List<Missile> l, String id)
-	{
+/**
+ * Returns missile from list by Id
+ * @param l Missile List
+ * @param id the id
+ * @return The Missile with that id
+ */
+	public static Missile getMissileFromList(List<Missile> l, String id) {
 		for (Missile missile : l) {
 			if (missile.equals(id))
 				return missile;
 		}
 		return null;
 	}
+
 	@Override
 	public void run() {
-		started=true;
+		started = true;
 		try {
 
 			synchronized (Lock) {
-				System.out.printf("%d : Missile id %s Launched\n",War.WarTimeInSeconds, id);
-				synchronized (launcher){
+				System.out.printf("%d : Missile id %s Launched\n",
+						War.WarTimeInSeconds, id);
+				synchronized (launcher) {
 					launcher.notify();
 				}
 				missileState = State.Flying;
-				
+
 				sleep(flyTime * 1000);
-				if (missileState != State.Intercepted){
+				if (missileState != State.Intercepted) {
 					missileState = State.Hit;
-					System.out.printf("%d : Missile id %s Hit target %s!! \n",War.WarTimeInSeconds, id,destination);
+					System.out.printf("%d : Missile id %s Hit target %s!! \n",
+							War.WarTimeInSeconds, id, destination);
 				} else {
-					System.out.printf("%d : Missile id %s didnt hit target %s good job! \n",War.WarTimeInSeconds, id,destination);
+					System.out
+							.printf("%d : Missile id %s didnt hit target %s good job! \n",
+									War.WarTimeInSeconds, id, destination);
 				}
-				
-				
+				// notifi that was a hit i
+				synchronized (launcher) {
+					launcher.notify();
+				}
+
 			}
 			launcher.removeMissile(this);
-			
+
 		} catch (InterruptedException e) {
-			
-			System.out.println(toString()+ " Was Intercepted!");
-			//e.printStackTrace();
+			// missile was intercepted
+			synchronized (launcher) {
+				launcher.notify();
+			}
+			System.out.println(toString() + " Was Intercepted!");
+			// e.printStackTrace();
 		}
-	
+
 	}
 
 	@Override
 	public String toString() {
-		
-		return "Missile: #"+getId()+" To " + getDestination();
+
+		return "Missile: #" + getId() + " To " + getDestination();
 	}
 
 	/**
 	 * 
 	 * @author Kosta Lazarev
 	 * 
-	 * Comparator implementation for using priorty queue for launching the missiles by time order.
-	 * The compare uses the launching time of each missile.
+	 *         Comparator implementation for using priorty queue for launching
+	 *         the missiles by time order. The compare uses the launching time
+	 *         of each missile.
 	 *
 	 */
-static class MissileComparator implements  Comparator<Missile>
-	{
+	static class MissileComparator implements Comparator<Missile> {
 
-	@Override
-	public int compare(Missile o1, Missile o2) {
-		
-		return o1.getLauncTime() - o2.getLauncTime();
-	}
-	
+		@Override
+		public int compare(Missile o1, Missile o2) {
+
+			return o1.getLauncTime() - o2.getLauncTime();
+		}
+
 	}
 }// end Missile
