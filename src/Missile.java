@@ -1,5 +1,5 @@
 import java.util.List;
-
+import java.util.Comparator;
 
 public class Missile extends Thread {
 	public enum State {OnGround,Flying,Intercepted,Hit}
@@ -29,6 +29,7 @@ public class Missile extends Thread {
 	public void Intercep(){
 		if (missileState == State.Flying){
 			missileState=State.Intercepted;
+			interrupt();
 		}
 	}
 	public static Missile getMissile (List<Launcher> lList,String id){
@@ -101,9 +102,6 @@ public class Missile extends Thread {
 	public void run() {
 		started=true;
 		try {
-			while(launcTime > War.WarTimeInSeconds)
-				sleep(1000);
-				
 			synchronized (Lock) {
 				System.out.printf("%d : Missile id %s Launched\n",War.WarTimeInSeconds, id);
 				synchronized (launcher){
@@ -125,8 +123,34 @@ public class Missile extends Thread {
 			
 		} catch (InterruptedException e) {
 			
-			e.printStackTrace();
+			System.out.println(toString()+ " Was Intercepted!");
+			//e.printStackTrace();
 		}
+	
 	}
 
-}
+	@Override
+	public String toString() {
+		
+		return "Missile: #"+getId()+" To " + getDestination();
+	}
+
+	/**
+	 * 
+	 * @author Kosta Lazarev
+	 * 
+	 * Comparator implementation for using priorty queue for launching the missiles by time order.
+	 * The compare uses the launching time of each missile.
+	 *
+	 */
+static class MissileComparator implements  Comparator<Missile>
+	{
+
+	@Override
+	public int compare(Missile o1, Missile o2) {
+		
+		return o1.getLauncTime() - o2.getLauncTime();
+	}
+	
+	}
+}// end Missile

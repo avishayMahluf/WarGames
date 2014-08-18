@@ -1,12 +1,13 @@
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.PriorityQueue;
 import java.util.Timer;
 import java.util.TimerTask;
 
-
 public class Launcher extends Thread {
 
-	private List<Missile> missiles;
+	private PriorityQueue<Missile> missiles;
 	private String id;
 	private boolean isHidden;
 	private boolean isDestroyed;
@@ -56,7 +57,9 @@ public class Launcher extends Thread {
 	public Launcher(String Id){
 		
 		isDestroyed=false;
-		missiles = new ArrayList<Missile>();
+		Comparator<Missile> comparator = new Missile.MissileComparator();
+		missiles = new PriorityQueue<Missile>(comparator);
+		
 		this.id = Id;
 		this.isHidden = true;
 		
@@ -70,7 +73,9 @@ public class Launcher extends Thread {
 	public Launcher(String Id,boolean IsHidden){
 		
 		isDestroyed=false;
-		missiles = new ArrayList<Missile>();
+		Comparator<Missile> comparator = new Missile.MissileComparator();
+		missiles = new PriorityQueue<Missile>(comparator);
+		
 		this.id = Id;
 		this.isHidden = IsHidden;
 		
@@ -84,7 +89,8 @@ public class Launcher extends Thread {
 		missiles.add(m);
 	}
 	public List<Missile> getMissiles(){
-		return missiles;
+		
+		return new ArrayList<Missile>(missiles);
 	}
 	public Missile getMissile(String id){
 		Missile m = null;
@@ -154,30 +160,54 @@ public class Launcher extends Thread {
 		
 		while (!isDestroyed){
 			try{
-			for (Missile missile : missiles) {
-				if (!missile.isAlive() && !missile.isStarted()){
-					missile.setLock(Lock);
-					missile.start();
+				Missile m = missiles.poll();
 				
-					synchronized (this) {
-						try {
-							wait();
-							peek();
-						} catch (InterruptedException e) {
-						
-							e.printStackTrace();
-						}
-					}
-				
-				}
+				if (m!=null){
 					
+					if(m.getLauncTime() == War.WarTimeInSeconds || m.getLauncTime() == 0){
+						m.setLock(Lock);
+						m.start();
+						synchronized (this) {
+							try {
+								wait();
+								peek();
+							} catch (InterruptedException e) {
+							
+								e.printStackTrace();
+								System.out.println("missile was interputed");
+							}
+						}
+					}else {
+						missiles.add(m);
+					}
+						
 				}
+				sleep(100);
 				
+//			for (Missile missile : missiles) {
+//				if (!missile.isAlive() && !missile.isStarted()){
+//					missile.setLock(Lock);
+//					missile.start();
+//				
+//					synchronized (this) {
+//						try {
+//							wait();
+//							peek();
+//						} catch (InterruptedException e) {
+//						
+//							e.printStackTrace();
+//						}
+//					}
+//				
+//				}
+//					
+//				}
+//				
 			} catch (Exception e){
 				System.err.println("Launcher " + id + " reloads!");
 			}
 				
-		}
+		} // end While
 		
 
 		
