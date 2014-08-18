@@ -26,12 +26,15 @@ public class Missile extends Thread {
 		this.launcher=TheLauncher;
 		missileState=State.OnGround;
 	}
-	public void Intercep(){
+	public boolean Intercep(){
 		if (missileState == State.Flying){
 			missileState=State.Intercepted;
 			interrupt();
+			return true;
 		}
+		return false;
 	}
+	
 	public static Missile getMissile (List<Launcher> lList,String id){
 		
 		Missile m =  null;
