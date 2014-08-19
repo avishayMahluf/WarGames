@@ -54,7 +54,7 @@ public class Launcher extends Thread {
 	public Launcher(String Id) {
 
 		isDestroyed = false;
-		Comparator<Missile> comparator = new Missile.MissileComparator();
+		Comparator<Missile> comparator = new Missile.MissileLaunchComparator();
 		missiles = new PriorityQueue<Missile>(comparator);
 
 		this.id = Id;
@@ -70,7 +70,7 @@ public class Launcher extends Thread {
 	public Launcher(String Id, boolean IsHidden) {
 
 		isDestroyed = false;
-		Comparator<Missile> comparator = new Missile.MissileComparator();
+		Comparator<Missile> comparator = new Missile.MissileLaunchComparator();
 		missiles = new PriorityQueue<Missile>(comparator);
 
 		this.id = Id;
@@ -214,5 +214,22 @@ public class Launcher extends Thread {
 		} // end While
 
 	}
+	/**
+	 * 
+	 * @author Kosta & Omri 
+	 * 
+	 *
+	 */
+static class DestructComparator implements Comparator<Launcher>
+{
+
+	@Override
+	public int compare(Launcher l1, Launcher l2) {
+	
+		return l2.getDestructTime()-l1.getDestructTime();
+	}
+
+	
+}
 
 }
