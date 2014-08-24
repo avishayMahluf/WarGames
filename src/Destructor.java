@@ -32,6 +32,7 @@ public class Destructor extends Thread {
 		this.id 			= dId;
 		dType				= Type.iron_dome;
 		LockMissile 		= new Object();
+		isActive			= true;
 	}
 
 	public Destructor(Type type) {
@@ -39,6 +40,7 @@ public class Destructor extends Thread {
 		destructdLauncher 	= new PriorityQueue<Launcher>((Comparator<? super Launcher>)(new Launcher.DestructComparator()));
 		this.dType 			= type;
 		LockLuncher 		= new Object();
+		isActive			= true;
 	}
 
 	public void addDestructLauncher(Launcher l) {
@@ -54,52 +56,55 @@ public class Destructor extends Thread {
 	}
 
 	public void run() {
+		try{
 		if (dType == Type.iron_dome){
 			MissileDestructorRun();
 		} else {
 			LauncherDestructorRun();
 		}
+		} catch (InterruptedException e){
+			e.printStackTrace();
+		}
 	}
 	private void MissileDestructorRun(){
 		while(isActive){
 			try {
-				//Lau m = missiles.peek();
-//
-//				if (m != null) {
-//
-//					if (m.getLauncTime() == War.WarTimeInSeconds
-//							|| m.getLauncTime() == 0) {
-//						m.setLock(Lock);
-//						m.start();
-//						synchronized (this) {
-//							try {
-//								wait();
-//								peek();
-//								wait();
-//								missiles.poll();
-//							} catch (InterruptedException e) {
-//
-//								e.printStackTrace();
-//								System.out.println("missile was interputed");
-//							}
-//						}
-//					} 
-//
-//				}
-//				sleep(100);
-		} catch (Exception e) {}
+				Missile m = destructdMissile.peek();
+
+				if (m != null) {
+
+					if (m.getDestructAfterLaunch() == War.WarTimeInSeconds) {
+						System.out.println("Trying to intercept "+ m.toString());
+						if (m.Intercep())
+							System.out.println(this.toString() +" Intercepted " + m.toString() );
+						destructdMissile.poll();
+					}
+					
+				}
+				sleep(100);
+			} catch (Exception e) {
+				
+			}
 		}
+		
 	}
-	private void LauncherDestructorRun(){
+	private void LauncherDestructorRun() throws InterruptedException{
 		while(isActive){
 			try {
-				Launcher l = destructdLauncher.poll();
+				Launcher l = destructdLauncher.peek();
 				if (l.getDestructTime() == War.WarTimeInSeconds){
 					
+					if (l.destroyLauncher()){
+						System.out.println(l.toString() + " Distroyed!!");
+					} else {
+						System.out.println("Fail to distroy "+l.toString());
+					}
+					destructdLauncher.poll();
 				}
 			} catch (Exception e) {
 				
 			}
+			sleep(500);
 		}
 	}
 	
@@ -112,6 +117,11 @@ public class Destructor extends Thread {
 			}
 		}
 		return false;
+	}
+	
+	@Override
+	public String toString(){
+		return "Destructor type:"+ this.dType;
 	}
 
 }

@@ -3,6 +3,5 @@
 	<classpathentry excluding="src/" kind="src" path=""/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jre8"/>
-	<classpathentry kind="lib" path="E:/Kosta/Dropbox/java/summer/WarGames/controlsfx-8.0.6.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
