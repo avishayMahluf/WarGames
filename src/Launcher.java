@@ -7,6 +7,10 @@ import java.util.TimerTask;
 
 public class Launcher extends Thread {
 
+	@Override
+	public String toString() {
+		return "Launcher #" + id ;
+	}
 	private PriorityQueue<Missile> missiles;
 	private String id;
 	private boolean isHidden;
