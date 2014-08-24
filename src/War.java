@@ -88,6 +88,9 @@ public class War {
 		for (Destructor destructor : missileDestructors) {
 			destructor.start();
 		}
+		for (Destructor destructor : missileLauncherDestructors) {
+			destructor.start();
+		}
 
 	}
 

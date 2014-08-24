@@ -102,7 +102,7 @@ public class Destructor extends Thread {
 			try {
 				Launcher l = destructdLauncher.peek();
 				if (l.getDestructTime() == War.WarTimeInSeconds){
-					
+					System.out.println("Trieng to distroy " + l.toString() );
 					if (l.destroyLauncher()){
 						System.out.println(l.toString() + " Distroyed!!");
 					} else {
