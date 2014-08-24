@@ -150,9 +150,11 @@ public class Launcher extends Thread {
 
 			@Override
 			public void run() {
-				isHidden = true;
-				System.out.println("Launcher " + id + " is hidden");
-				this.cancel();
+				if (!isDestroyed){
+					isHidden = true;
+					System.out.println("Launcher " + id + " is hidden");
+					this.cancel();
+				}
 
 			}
 		}, peekTime, 1000);
