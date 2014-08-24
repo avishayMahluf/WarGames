@@ -2,6 +2,8 @@ import java.util.List;
 import java.util.Comparator;
 import java.util.logging.FileHandler;
 
+import com.sun.org.glassfish.external.statistics.Statistic;
+
 public class Missile extends Thread {
 	public enum State {
 		OnGround, Flying, Intercepted, Hit
@@ -18,7 +20,7 @@ public class Missile extends Thread {
 	private boolean started;
 	private Launcher launcher;
 	private FileHandler fileHandler;
-	
+	private Statistics statistics;
 	public boolean isStarted() {
 		return started;
 	}
@@ -78,6 +80,9 @@ public class Missile extends Thread {
 		return false;
 	}
 
+	public void setStatistics(Statistics s){
+		statistics = s;
+	}
 	public static Missile getMissile(List<Launcher> lList, String id) {
 
 		Missile m = null;
@@ -172,6 +177,15 @@ public class Missile extends Thread {
 					missileState = State.Hit;
 					System.out.printf("%d : Missile id %s Hit target %s!! \n",
 							War.WarTimeInSeconds, id, destination);
+					if(statistics!=null){
+						statistics.addMissileHit();
+						try {
+							statistics.addDamage(damage);
+						} catch (Exception e) {
+							
+							e.printStackTrace();
+						}
+					}
 				} else {
 					System.out
 							.printf("%d : Missile id %s didnt hit target %s good job! \n",
@@ -203,7 +217,6 @@ public class Missile extends Thread {
 	}
 
 	/**
-	 * 
 	 * @author Kosta Lazarev
 	 * 
 	 *         Comparator implementation for using priorty queue for launching
