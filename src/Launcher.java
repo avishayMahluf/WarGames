@@ -7,6 +7,9 @@ import java.util.TimerTask;
 
 public class Launcher extends Thread {
 
+	private static final int MIN_PEEK = 3000;
+	private static final int MAX_PEEK = 9000;
+
 	@Override
 	public String toString() {
 		return "Launcher #" + id ;
@@ -145,19 +148,17 @@ public class Launcher extends Thread {
 		peekTimer = new Timer();
 		System.out.println("Launcher " + id + " is visible");
 		isHidden = false;
-		int peekTime = 3000 + (int) (Math.random() * 9000);
+		int peekTime = MIN_PEEK + (int) (Math.random() * MAX_PEEK);
 		peekTimer.scheduleAtFixedRate(new TimerTask() {
 
 			@Override
 			public void run() {
-				if (!isDestroyed){
-					isHidden = true;
-					System.out.println("Launcher " + id + " is hidden");
-					this.cancel();
-				}
+				isHidden = true;
+				System.out.println("Launcher " + id + " is hidden");
+				this.cancel();
 
 			}
-		}, peekTime, 1000);
+		}, peekTime, War.TIMER_TICK);
 
 	}
 
@@ -194,25 +195,6 @@ public class Launcher extends Thread {
 				}
 				sleep(100);
 
-				// for (Missile missile : missiles) {
-				// if (!missile.isAlive() && !missile.isStarted()){
-				// missile.setLock(Lock);
-				// missile.start();
-				//
-				// synchronized (this) {
-				// try {
-				// wait();
-				// peek();
-				// } catch (InterruptedException e) {
-				//
-				// e.printStackTrace();
-				// }
-				// }
-				//
-				// }
-				//
-				// }
-				//
 			} catch (Exception e) {
 				System.err.println("Launcher " + id + " reloads!");
 			}
