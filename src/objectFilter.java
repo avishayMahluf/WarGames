@@ -1,7 +1,11 @@
 import java.util.Vector;
 import java.util.logging.Filter;
 import java.util.logging.LogRecord;
-
+/**
+ * 
+ * @author Kosta Lazarev & Omri Glam
+ *
+ */
 public class objectFilter implements Filter {
 
 	private Vector<Object> objectVector = new Vector<Object>();
@@ -9,8 +13,8 @@ public class objectFilter implements Filter {
 	public objectFilter(Object toList) {
 		this.objectVector.add(toList);
 	}
-
 	@Override
+
 	public boolean isLoggable(LogRecord record) {
 		if (record.getParameters() != null) {
 			for (int i = 0; i < objectVector.size(); i++) {

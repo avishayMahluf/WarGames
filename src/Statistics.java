@@ -32,8 +32,8 @@ public class Statistics {
 	}
 	/**
 	 * Add damage cost to total damage sum
-	 * @param damage positive damage int
-	 * @throws Exception if damage is negativ
+	 * @param damage is a positive integer
+	 * @throws Exception if damage is negative
 	 */
 	public void addDamage(int damage) throws Exception{
 		if (damage <0){

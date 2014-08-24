@@ -161,5 +161,8 @@ public class Menu {
 	public void endWarGame() {
 
 		showStatistics();
+		System.out.println("ISIS send it's best regards...");
+		System.exit(0);
+		
 	}
 }
