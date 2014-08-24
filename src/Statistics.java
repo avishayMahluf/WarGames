@@ -6,6 +6,43 @@ public class Statistics {
 	private int missileHit;
 	private int destroidLaunchers;
 	private int totalDamage;
+	/**
+	 * Create clean statistics
+	 */
+	public Statistics(){
+		missileLaunched=
+		missileHit=
+		missileIntercepted=
+		destroidLaunchers=
+		totalDamage=0;
+		
+	}
+	
+	public void addMissileLaunch(){
+		missileLaunched++;
+	}
+	public void addMissileIntercept(){
+		missileIntercepted++;
+	}
+	public void addMissileHit(){
+		missileHit++;
+	}
+	public void addDeistroidLauncher(){
+		destroidLaunchers++;
+	}
+	/**
+	 * Add damage cost to total damage sum
+	 * @param damage positive damage int
+	 * @throws Exception if damage is negativ
+	 */
+	public void addDamage(int damage) throws Exception{
+		if (damage <0){
+			throw new Exception("damage can't fix stuff!");
+		} else {
+			totalDamage+=damage;
+		}
+	}
+	
 	public int getMissileLaunched() {
 		return missileLaunched;
 	}
@@ -37,4 +74,14 @@ public class Statistics {
 		this.totalDamage = totalDamage;
 	}
 	
+	@Override
+	public String toString(){
+		String ret = "\t Statistics \n" +
+				"Number of missile launched:\t"+missileLaunched +
+				"Number of missile intersepted:\t"+missileIntercepted+
+				"Number of missile targer hit:\t"+missileHit+
+				"Number of destroid launchers:\t"+destroidLaunchers+
+				"Total damage is:\t\t"+totalDamage;
+		return ret;
+	}
 }

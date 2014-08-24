@@ -31,6 +31,7 @@ public class War {
 	private List<Missile> inAirMissiles;
 	private Timer WarTimer;
 	private boolean started;
+	private Statistics stats;
 	public static int WarTimeInSeconds;
 
 	/**
@@ -44,6 +45,7 @@ public class War {
 		inAirMissiles = new ArrayList<Missile>();
 		WarTimer = new Timer();
 		started = false;
+		stats=new Statistics();
 
 	}
 

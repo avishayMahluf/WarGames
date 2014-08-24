@@ -13,6 +13,7 @@ public class Destructor extends Thread {
 	private Object LockLuncher;
 	private String id;
 	private boolean isActive;
+	private Statistics stats;
 	private final static String DEAFULT_ID = "D00";
 
 	public enum Type {
@@ -43,6 +44,9 @@ public class Destructor extends Thread {
 		isActive			= true;
 	}
 
+	public void setStatistics(Statistics s){
+		stats =s;
+	}
 	public void addDestructLauncher(Launcher l) {
 		destructdLauncher.add(l);
 	}
@@ -75,8 +79,13 @@ public class Destructor extends Thread {
 
 					if (m.getDestructAfterLaunch() == War.WarTimeInSeconds) {
 						System.out.println("Trying to intercept "+ m.toString());
-						if (m.Intercep())
+						if (m.Intercep()){
 							System.out.println(this.toString() +" Intercepted " + m.toString() );
+							if (stats != null){
+								stats.addMissileHit();
+								
+							}
+						}
 						destructdMissile.poll();
 					}
 					
