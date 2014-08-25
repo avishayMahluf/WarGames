@@ -240,10 +240,6 @@ public class Launcher extends Thread {
 		} // end While
 
 	}
-	private String toStringMissile(Missile m) {
-		
-		return null;
-	}
 	/**
 	 * 
 	 * @author Kosta & Omri 
