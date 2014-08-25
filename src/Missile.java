@@ -52,8 +52,8 @@ public class Missile extends Thread {
 		missileState = State.OnGround;
 		try{
 			this.fileHandler = fileHandler;
-			logger = Logger.getLogger("War.Logger");
-			logger.addHandler(fileHandler);
+			//logger = Logger.getLogger("War.Logger");
+			//logger.addHandler(fileHandler);
 			
 		}catch(Exception e){
 			System.out.println("Missile #"+this.id +" logger didn't started");

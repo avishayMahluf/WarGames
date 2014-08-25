@@ -6,10 +6,7 @@ import java.util.TimerTask;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.io.File;
-import java.lang.reflect.Method;
 
-import com.sun.jmx.snmp.tasks.Task;
 
 /*
  * WarGames main class
