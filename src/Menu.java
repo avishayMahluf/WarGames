@@ -44,7 +44,7 @@ public class Menu {
 	 */
 	public void addLauncher() {
 		System.out.println("Add new missile launcher");
-		s
+		
 	}
 
 	/**
