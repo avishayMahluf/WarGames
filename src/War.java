@@ -227,4 +227,12 @@ public class War {
 		missileLauncherDestructors.add(new Destructor(Destructor.Type
 				.valueOf(type)));
 	}
+	/**
+	 * 
+	 * @param id
+	 */
+	public void addLauncher(String id){
+		
+	}
+	
 }

@@ -44,6 +44,14 @@ public class Menu {
 	 */
 	public void addLauncher() {
 		System.out.println("Add new missile launcher");
+		System.out.println("Enter id:");
+		int lId;
+		try{
+			lId = s.nextInt();
+			//war.addLauncherDestructor(lId);
+		} catch (Exception e) {
+			System.out.println("Enter numbers only");
+		}
 		
 	}
 
