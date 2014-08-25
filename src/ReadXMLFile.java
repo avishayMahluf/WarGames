@@ -76,7 +76,7 @@ public class ReadXMLFile {
 			Destructor.Type dType;
 			Element eDestructor = (Element) nDestructors.item(i);
 			dType = Destructor.Type.valueOf(eDestructor.getAttribute("type"));
-			Destructor mDestructor = new Destructor(dType);
+			Destructor mDestructor = new Destructor(dType,stats);
 			System.out.println("\nCurrent Element :"
 					+ eDestructor.getNodeName() + " type = " + dType);
 			NodeList nDestructdLauncher = eDestructor
@@ -119,7 +119,7 @@ public class ReadXMLFile {
 
 			Element eDestructor = (Element) nDestructors.item(i);
 			dId = eDestructor.getAttribute("id");
-			Destructor mDestructor = new Destructor(dId);
+			Destructor mDestructor = new Destructor(dId,stats);
 			System.out.println("\nCurrent Element :"
 					+ eDestructor.getNodeName() + " id = " + dId);
 			NodeList nDestructdMissile = eDestructor
@@ -170,7 +170,7 @@ public class ReadXMLFile {
 				System.out.println("Launcher isHidden : "
 						+ eElement.getAttribute("isHidden"));
 				Launcher launcher = new Launcher(eElement.getAttribute("id"),
-						Boolean.parseBoolean(eElement.getAttribute("isHidden")));
+						Boolean.parseBoolean(eElement.getAttribute("isHidden")),stats);
 				NodeList nMissiles = eElement.getElementsByTagName("missile");
 				for (int j = 0; j < nMissiles.getLength(); j++) {
 					mId = ((Element) (nMissiles.item(j))).getAttribute("id");
