@@ -84,7 +84,7 @@ public class Destructor extends Thread {
 		
 		try {
 			fileHandler = new FileHandler("Destructor_" + type.toString() 
-					+ "_" +this.id + ".txt",false);
+					+ "_" +this.getId() + ".txt",false);
 			fileHandler.setFilter(new ObjectFilter(this));
 			fileHandler.setFormatter(new WarFormatter());
 			
@@ -93,7 +93,7 @@ public class Destructor extends Thread {
 			logger.setUseParentHandlers(false);
 			
 		} catch (Exception e) {
-			System.err.println("Destructor_IronDome #" + this.id +" logger didn't started");
+			System.err.println("Destructor_IronDome #" + this.getId() +" logger didn't started");
 		}
 	}
 
@@ -145,7 +145,6 @@ public class Destructor extends Thread {
 
 			}
 		}
-
 	}
 
 	private void LauncherDestructorRun() throws InterruptedException {
@@ -153,14 +152,14 @@ public class Destructor extends Thread {
 			try {
 				Launcher l = destructdLauncher.peek();
 				if (l.getDestructTime() == War.WarTimeInSeconds) {
-					logger.log(Level.INFO,"Trieng to distroy " + l.toString(),this);
+					logger.log(Level.INFO,"Trying to destroy " + l.toString(),this);
 					if (l.destroyLauncher()) {
 						logger.log(Level.INFO,l.toString() + " Distroyed!!",this);
 						if (stats != null) {
 							stats.addDeistroidLauncher();
 						}
 					} else {
-						logger.log(Level.INFO,"Fail to distroy " + l.toString(),this);
+						logger.log(Level.INFO,"Fail to destroy " + l.toString(),this);
 					}
 					destructdLauncher.poll();
 				}

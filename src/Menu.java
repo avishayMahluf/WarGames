@@ -59,6 +59,7 @@ public class Menu {
 		try{
 			lId = s.nextInt();
 			war.addLauncher(lId);
+			System.out.println("Launcher was created successfully");
 		} catch (Exception e) {
 			System.out.println("Enter numbers only");
 		}
