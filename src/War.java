@@ -3,6 +3,10 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.io.File;
 import java.lang.reflect.Method;
 
 import com.sun.jmx.snmp.tasks.Task;
@@ -16,7 +20,7 @@ import com.sun.jmx.snmp.tasks.Task;
  * Main program class that lunches the system into activity
  * 
  * @author by Kosta Lazarev & Omri Glam
- * @version 16/07/2014
+ * @version 25/08/2014
  */
 public class War {
 
@@ -33,7 +37,8 @@ public class War {
 	private boolean started;
 	private Statistics stats;
 	public static int WarTimeInSeconds;
-
+	private static Logger logger;
+	
 	/**
 	 * Main war game constructor
 	 */
@@ -46,14 +51,29 @@ public class War {
 		WarTimer = new Timer();
 		started = false;
 		stats=new Statistics();
+		addFileHandler();
 
+	}
+
+	private void addFileHandler() {
+		try{
+			
+		FileHandler fileHandler = new FileHandler("WarLog.txt");
+		fileHandler.setFormatter(new WarFormatter());
+		logger = Logger.getLogger("War.Logger");
+		logger.addHandler(fileHandler);
+		logger.setUseParentHandlers(false);
+		}catch(Exception e){
+			System.err.println("Logger was not found!");
+		}
+		
 	}
 
 	/**
 	 * Start seconds counting
 	 */
 	protected void startWarTimer() {
-		System.out.println("War Clock Started");
+		logger.log(Level.INFO,"War Clock Started");
 		WarTimer.scheduleAtFixedRate(new TimerTask() {
 
 			@Override
@@ -82,6 +102,7 @@ public class War {
 	 */
 	private void startWar() {
 		startWarTimer();
+		logger.log(Level.INFO,"War has started");
 		for (Launcher mLauncer : missileLaunchers) {
 			mLauncer.start();
 		}
