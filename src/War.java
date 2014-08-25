@@ -135,13 +135,15 @@ public class War {
 	public List<Launcher> getMissileLaunchers() {
 		return missileLaunchers;
 	}
-
+	public Statistics getStatistics(){
+		return stats;
+	}
 	/**
 	 * War started boolean
 	 * 
 	 * @return TRUE if war is started
 	 */
-	public boolean isStarted() {
+ 	public boolean isStarted() {
 		return started;
 	}
 

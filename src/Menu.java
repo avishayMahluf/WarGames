@@ -152,8 +152,8 @@ public class Menu {
 	 * Show war statistics
 	 */
 	public void showStatistics() {
-
-	}
+		System.out.printf(war.getStatistics().toString());
+		}
 
 	/**
 	 * Ends war and shows statistics

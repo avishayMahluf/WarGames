@@ -76,12 +76,12 @@ public class Statistics {
 	
 	@Override
 	public String toString(){
-		String ret = "\t Statistics \n" +
+		String ret = "\t **Statistics** \n" +
 				"Number of missile launched:\t"+missileLaunched +
-				"Number of missile intersepted:\t"+missileIntercepted+
-				"Number of missile targer hit:\t"+missileHit+
-				"Number of destroid launchers:\t"+destroidLaunchers+
-				"Total damage is:\t\t"+totalDamage;
+				"\nNumber of missile intersepted:\t"+missileIntercepted+
+				"\nNumber of missile targer hit:\t"+missileHit+
+				"\nNumber of destroid launchers:\t"+destroidLaunchers+
+				"\nTotal damage is:\t\t"+totalDamage+"\n";
 		return ret;
 	}
 }

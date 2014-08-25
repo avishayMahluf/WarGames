@@ -10,16 +10,14 @@ public class Launcher extends Thread {
 	private static final int MIN_PEEK = 3000;
 	private static final int MAX_PEEK = 9000;
 
-	@Override
-	public String toString() {
-		return "Launcher #" + id ;
-	}
+
 	private PriorityQueue<Missile> missiles;
 	private String id;
 	private boolean isHidden;
 	private boolean isDestroyed;
 	private int destructTime;
 	private Timer peekTimer;
+	private Statistics stats;
 	/**
 	 * Launcher lock
 	 */
@@ -74,8 +72,8 @@ public class Launcher extends Thread {
 	 * @param Id
 	 * @param IsHidden
 	 */
-	public Launcher(String Id, boolean IsHidden) {
-
+	public Launcher(String Id, boolean IsHidden,Statistics stats) {
+		this.stats = stats;
 		isDestroyed = false;
 		Comparator<Missile> comparator = new Missile.MissileLaunchComparator();
 		missiles = new PriorityQueue<Missile>(comparator);
@@ -129,7 +127,10 @@ public class Launcher extends Thread {
 		missiles.remove(m.getId());
 
 	}
-
+	@Override
+	public String toString() {
+		return "Launcher #" + id ;
+	}
 	@Override
 	public boolean equals(Object obj) {
 
@@ -177,7 +178,9 @@ public class Launcher extends Thread {
 					if (m.getLauncTime() == War.WarTimeInSeconds
 							|| m.getLauncTime() == 0) {
 						m.setLock(Lock);
+						m.setStatistics(stats);
 						m.start();
+						stats.addMissileLaunch();
 						synchronized (this) {
 							try {
 								wait();
