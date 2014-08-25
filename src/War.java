@@ -250,6 +250,7 @@ public class War {
 	 * @param id
 	 */
 	public void addLauncher(int id){
+		missileLaunchers.add(new Launcher("" + id));
 		
 	}
 	
