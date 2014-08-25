@@ -6,11 +6,11 @@ import java.util.logging.LogRecord;
  * @author Kosta Lazarev & Omri Glam
  *
  */
-public class objectFilter implements Filter {
+public class ObjectFilter implements Filter {
 
 	private Vector<Object> objectVector = new Vector<Object>();
 
-	public objectFilter(Object toList) {
+	public ObjectFilter(Object toList) {
 		this.objectVector.add(toList);
 	}
 	@Override

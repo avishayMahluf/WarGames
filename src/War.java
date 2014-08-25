@@ -107,7 +107,7 @@ public class War {
 
 			ReadXMLFile.getData(CONFIG_FILE, WarGames.getMissileLaunchers(),
 					WarGames.getMissileDestructors(),
-					WarGames.getMissileLauncherDestructors());
+					WarGames.getMissileLauncherDestructors(),WarGames.stats);
 
 			WarGames.startWar();
 			WarGames.showMenu();

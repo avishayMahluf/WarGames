@@ -14,10 +14,11 @@ import java.util.List;
 
 public class ReadXMLFile {
 
+	
 	public static void getData(String FileName,
 			List<Launcher> missileLaunchers,
 			List<Destructor> missileDestructor,
-			List<Destructor> missileLauncherDestructor) {
+			List<Destructor> missileLauncherDestructor, Statistics stats) {
 
 		try {
 
@@ -25,10 +26,10 @@ public class ReadXMLFile {
 			System.out.println("Load element :"
 					+ doc.getDocumentElement().getNodeName());
 			System.out.println("----------------------------");
-			loadMissileLauncher(doc, missileLaunchers);
-			loadMissileDestructor(doc, missileDestructor, missileLaunchers);
+			loadMissileLauncher(doc, missileLaunchers,stats);
+			loadMissileDestructor(doc, missileDestructor, missileLaunchers,stats);
 			loadMissileLauncherDestructor(doc, missileLauncherDestructor,
-					missileLaunchers);
+					missileLaunchers,stats);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -59,11 +60,12 @@ public class ReadXMLFile {
 	 * @param doc
 	 * @param missileLauncherDestructor
 	 * @param missileLaunchers
+	 * @param stats 
 	 * @throws Exception
 	 */
 	private static void loadMissileLauncherDestructor(Document doc,
 			List<Destructor> missileLauncherDestructor,
-			List<Launcher> missileLaunchers) throws Exception {
+			List<Launcher> missileLaunchers, Statistics stats) throws Exception {
 		System.out.println("Loading missile launcher destructors");
 		Node nMissileLauncherDestructor = doc.getElementsByTagName(
 				"missileLauncherDestructors").item(0);
@@ -104,7 +106,7 @@ public class ReadXMLFile {
 	}
 
 	private static void loadMissileDestructor(Document doc,
-			List<Destructor> missileDestructors, List<Launcher> missileLaunchers)
+			List<Destructor> missileDestructors, List<Launcher> missileLaunchers, Statistics stats)
 			throws Exception {
 		System.out.println("Loading missile destructors");
 		Node nMissileDestructor = doc
@@ -149,7 +151,7 @@ public class ReadXMLFile {
 	}
 
 	private static void loadMissileLauncher(Document doc,
-			List<Launcher> missileLaunchers) {
+			List<Launcher> missileLaunchers, Statistics stats) {
 		System.out.println("missileLaunchers:");
 		NodeList nLaunchers = doc.getElementsByTagName("launcher");
 		for (int i = 0; i < nLaunchers.getLength(); i++) {
