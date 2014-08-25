@@ -1,6 +1,8 @@
 import java.util.List;
 import java.util.Comparator;
 import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.sun.org.glassfish.external.statistics.Statistic;
 
@@ -8,7 +10,7 @@ public class Missile extends Thread {
 	public enum State {
 		OnGround, Flying, Intercepted, Hit
 	}
-
+	private static Logger logger;
 	private State missileState;
 	private String id;
 	private String destination;
@@ -21,6 +23,8 @@ public class Missile extends Thread {
 	private Launcher launcher;
 	private FileHandler fileHandler;
 	private Statistics statistics;
+	
+	
 	public boolean isStarted() {
 		return started;
 	}
@@ -33,40 +37,29 @@ public class Missile extends Thread {
  * @param FlyTime
  * @param Damage
  * @param TheLauncher
+ * @param missileState
+ * @param 
+ * @param logger
  */
 	public Missile(String Id, String Destination, int LaunchTime, int FlyTime,
-			int Damage, Launcher TheLauncher){
+			int Damage, Launcher TheLauncher,FileHandler fileHandler){
 		this.id = Id;
 		this.launcTime = LaunchTime;
 		this.flyTime = FlyTime;
 		this.damage = Damage;
 		this.destination = Destination;
 		this.launcher = TheLauncher;
-		this.fileHandler = null;
 		missileState = State.OnGround;
+		try{
+			this.fileHandler = fileHandler;
+			logger = Logger.getLogger("War.Logger");
+			logger.addHandler(fileHandler);
+			
+		}catch(Exception e){
+			System.out.println("Missile #"+this.id +" logger didn't started");
+		}
 	}
-/**
- * Full missile constructor, only lock set will be needed to work correctly
- * Use the setLock method
- * @param Id
- * @param Destination
- * @param LaunchTime
- * @param FlyTime
- * @param Damage
- * @param TheLauncher
- * @param fileHandler
- */
-	public Missile(String Id, String Destination, int LaunchTime, int FlyTime,
-			int Damage, Launcher TheLauncher,FileHandler fileHandler) {
-		this.id = Id;
-		this.launcTime = LaunchTime;
-		this.flyTime = FlyTime;
-		this.damage = Damage;
-		this.destination = Destination;
-		this.launcher = TheLauncher;
-		this.fileHandler = fileHandler;
-		missileState = State.OnGround;
-	}
+
 /**
  * Intercept (Hit) in air missile
  * @return True if succeeded
@@ -165,8 +158,7 @@ public class Missile extends Thread {
 		try {
 
 			synchronized (Lock) {
-				System.out.printf("%d : Missile id %s Launched\n",
-						War.WarTimeInSeconds, id);
+				logger.log(Level.INFO,toString() + " Launched",this);
 				synchronized (launcher) {
 					launcher.notify();
 				}
@@ -175,8 +167,9 @@ public class Missile extends Thread {
 				sleep(flyTime * 1000);
 				if (missileState != State.Intercepted) {
 					missileState = State.Hit;
-					System.out.printf("%d : Missile id %s Hit target %s!! \n",
-							War.WarTimeInSeconds, id, destination);
+					logger.log(Level.INFO,"Missile id #" 
+							+ this.id + " Hit target "
+							+ destination,this);
 					if(statistics!=null){
 						statistics.addMissileHit();
 						try {
@@ -187,9 +180,7 @@ public class Missile extends Thread {
 						}
 					}
 				} else {
-					System.out
-							.printf("%d : Missile id %s didnt hit target %s good job! \n",
-									War.WarTimeInSeconds, id, destination);
+					logger.log(Level.INFO,this.toString() + " didnt hit target good job!",this);
 				}
 				// Notify that was a hit i
 				synchronized (launcher) {
@@ -204,7 +195,7 @@ public class Missile extends Thread {
 			synchronized (launcher) {
 				launcher.notify();
 			}
-			System.out.println(toString() + " Was Intercepted!");
+			logger.log(Level.INFO,this.toString() + " Was Intercepted!",this);
 			// e.printStackTrace();
 		}
 
@@ -213,7 +204,7 @@ public class Missile extends Thread {
 	@Override
 	public String toString() {
 
-		return "Missile: #" + getId() + " To " + getDestination();
+		return "Missile: #" + this.id + " To " + getDestination();
 	}
 
 	/**

@@ -38,6 +38,7 @@ public class War {
 	private Statistics stats;
 	public static int WarTimeInSeconds;
 	private static Logger logger;
+	private FileHandler fileHandler;
 	
 	/**
 	 * Main war game constructor
@@ -56,13 +57,12 @@ public class War {
 	}
 
 	private void addFileHandler() {
-		try{
-			
-		FileHandler fileHandler = new FileHandler("WarLog.txt");
-		fileHandler.setFormatter(new WarFormatter());
-		logger = Logger.getLogger("War.Logger");
-		logger.addHandler(fileHandler);
-		logger.setUseParentHandlers(false);
+		try{		
+			fileHandler = new FileHandler("WarLog.txt");
+			fileHandler.setFormatter(new WarFormatter());
+			logger = Logger.getLogger("War.Logger");
+			logger.addHandler(fileHandler);
+			logger.setUseParentHandlers(false);
 		}catch(Exception e){
 			System.err.println("Logger was not found!");
 		}
@@ -122,16 +122,16 @@ public class War {
 	 */
 	public static void main(String[] args) {
 
-		War WarGames = new War();
+		War warGames = new War();
 
 		try {
 
-			ReadXMLFile.getData(CONFIG_FILE, WarGames.getMissileLaunchers(),
-					WarGames.getMissileDestructors(),
-					WarGames.getMissileLauncherDestructors(),WarGames.stats);
+			ReadXMLFile.getData(CONFIG_FILE, warGames.getMissileLaunchers(),
+					warGames.getMissileDestructors(),
+					warGames.getMissileLauncherDestructors(),warGames.stats,warGames.fileHandler);
 
-			WarGames.startWar();
-			WarGames.showMenu();
+			warGames.startWar();
+			warGames.showMenu();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -254,6 +254,10 @@ public class War {
 	 */
 	public void addLauncher(String id){
 		
+	}
+	
+	public FileHandler getFileHandler(){
+		return fileHandler;
 	}
 	
 }

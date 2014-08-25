@@ -11,6 +11,7 @@ import org.xml.sax.SAXException;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.logging.FileHandler;
 
 public class ReadXMLFile {
 
@@ -18,7 +19,7 @@ public class ReadXMLFile {
 	public static void getData(String FileName,
 			List<Launcher> missileLaunchers,
 			List<Destructor> missileDestructor,
-			List<Destructor> missileLauncherDestructor, Statistics stats) {
+			List<Destructor> missileLauncherDestructor, Statistics stats,FileHandler fileHandler) {
 
 		try {
 
@@ -26,7 +27,7 @@ public class ReadXMLFile {
 			System.out.println("Load element :"
 					+ doc.getDocumentElement().getNodeName());
 			System.out.println("----------------------------");
-			loadMissileLauncher(doc, missileLaunchers,stats);
+			loadMissileLauncher(doc, missileLaunchers,stats,fileHandler);
 			loadMissileDestructor(doc, missileDestructor, missileLaunchers,stats);
 			loadMissileLauncherDestructor(doc, missileLauncherDestructor,
 					missileLaunchers,stats);
@@ -151,7 +152,7 @@ public class ReadXMLFile {
 	}
 
 	private static void loadMissileLauncher(Document doc,
-			List<Launcher> missileLaunchers, Statistics stats) {
+			List<Launcher> missileLaunchers, Statistics stats,FileHandler fileHandler) {
 		System.out.println("missileLaunchers:");
 		NodeList nLaunchers = doc.getElementsByTagName("launcher");
 		for (int i = 0; i < nLaunchers.getLength(); i++) {
@@ -183,7 +184,7 @@ public class ReadXMLFile {
 					mDamage = Integer.parseInt(((Element) (nMissiles.item(j)))
 							.getAttribute("damage"));
 					launcher.addMissile(new Missile(mId, mDestination,
-							mLaunchTime, mFlyTime, mDamage, launcher));
+							mLaunchTime, mFlyTime, mDamage, launcher, fileHandler));
 
 					System.out.println("missile : " + mId);
 					System.out.println("	destination	:	 " + mDestination);

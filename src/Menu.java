@@ -106,7 +106,7 @@ public class Menu {
 				int mDamage = s.nextInt();
 				System.out.println("Destenation:");
 				String mDest = s.next();
-				l.addMissile(new Missile("M" + mId, mDest, 0, mFlyTime, mDamage, l));
+				l.addMissile(new Missile("M" + mId, mDest, 0, mFlyTime, mDamage, l,war.getFileHandler()));
 			} else {
 				System.err.println("Launcher is destroyed!");
 			}

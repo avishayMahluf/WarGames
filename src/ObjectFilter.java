@@ -14,6 +14,10 @@ public class ObjectFilter implements Filter {
 	public ObjectFilter(Object toList) {
 		this.objectVector.add(toList);
 	}
+	
+	public void addFilter(Object toFilter) {
+		this.objectVector.add(toFilter);
+	}
 
 	@Override
 	public boolean isLoggable(LogRecord record) {
