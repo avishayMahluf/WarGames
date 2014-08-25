@@ -1,6 +1,7 @@
 import java.util.Comparator;
 import java.util.PriorityQueue;
 import java.util.logging.FileHandler;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Destructor extends Thread {
@@ -132,8 +133,8 @@ public class Destructor extends Thread {
 				if (m != null) {
 
 					if (m.getDestructAfterLaunch() == War.WarTimeInSeconds) {
-						System.out.println("Trying to intercept "
-								+ m.toString());
+						logger.log(Level.INFO, "Trying to intercept "
+								+ m.toString(),this);
 						intercept(m);
 						destructdMissile.poll();
 					}
@@ -152,14 +153,14 @@ public class Destructor extends Thread {
 			try {
 				Launcher l = destructdLauncher.peek();
 				if (l.getDestructTime() == War.WarTimeInSeconds) {
-					System.out.println("Trieng to distroy " + l.toString());
+					logger.log(Level.INFO,"Trieng to distroy " + l.toString(),this);
 					if (l.destroyLauncher()) {
-						System.out.println(l.toString() + " Distroyed!!");
+						logger.log(Level.INFO,l.toString() + " Distroyed!!",this);
 						if (stats != null) {
 							stats.addDeistroidLauncher();
 						}
 					} else {
-						System.out.println("Fail to distroy " + l.toString());
+						logger.log(Level.INFO,"Fail to distroy " + l.toString(),this);
 					}
 					destructdLauncher.poll();
 				}
@@ -172,8 +173,7 @@ public class Destructor extends Thread {
 
 	public boolean intercept(Missile m) {
 		if (m.Intercep()) {
-			System.out
-					.println(this.toString() + " Intercepted " + m.toString());
+			logger.log(Level.INFO,this.toString() + " Intercepted " + m.toString(),this);
 			if (stats != null) {
 				stats.addMissileIntercept();
 			}
