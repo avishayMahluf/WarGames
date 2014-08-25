@@ -4,13 +4,17 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 
 public class Launcher extends Thread {
 
 	private static final int MIN_PEEK = 3000;
 	private static final int MAX_PEEK = 9000;
-
-
+	
+	private static Logger logger;
 	private PriorityQueue<Missile> missiles;
 	private String id;
 	private boolean isHidden;
@@ -18,6 +22,9 @@ public class Launcher extends Thread {
 	private int destructTime;
 	private Timer peekTimer;
 	private Statistics stats;
+	private FileHandler fileHandler;
+	
+	
 	/**
 	 * Launcher lock
 	 */
@@ -80,6 +87,20 @@ public class Launcher extends Thread {
 
 		this.id = Id;
 		this.isHidden = IsHidden;
+		
+		try {
+			fileHandler = new FileHandler("Launcher_"+this.id+".txt",false);
+			fileHandler.setFilter(new ObjectFilter(this));
+			fileHandler.setFormatter(new WarFormatter());
+			
+			logger = Logger.getLogger("War.Logger");
+			logger.addHandler(fileHandler);
+			logger.setUseParentHandlers(false);
+			
+		} catch (Exception e) {
+			System.err.println("Launcher #"+this.id +" logger didn't started");
+		}
+		
 
 	}
 
@@ -129,7 +150,7 @@ public class Launcher extends Thread {
 	}
 	@Override
 	public String toString() {
-		return "Launcher #" + id ;
+		return "Launcher #" + this.id ;
 	}
 	@Override
 	public boolean equals(Object obj) {
@@ -147,7 +168,7 @@ public class Launcher extends Thread {
 	 */
 	protected void peek() {
 		peekTimer = new Timer();
-		System.out.println("Launcher " + id + " is visible");
+		logger.log(Level.INFO, this.toString() + " is visible",this);
 		isHidden = false;
 		int peekTime = MIN_PEEK + (int) (Math.random() * MAX_PEEK);
 		peekTimer.scheduleAtFixedRate(new TimerTask() {
@@ -155,7 +176,7 @@ public class Launcher extends Thread {
 			@Override
 			public void run() {
 				isHidden = true;
-				System.out.println("Launcher " + id + " is hidden");
+				logger.log(Level.INFO, this.toString() + " is hidden",this);
 				this.cancel();
 
 			}
@@ -168,7 +189,7 @@ public class Launcher extends Thread {
 	 * 
 	 */
 	public void run() {
-
+		logger.log(Level.INFO,this.toString()+" is activated",this);
 		while (!isDestroyed) {
 			try {
 				Missile m = missiles.peek();
@@ -190,7 +211,7 @@ public class Launcher extends Thread {
 							} catch (InterruptedException e) {
 
 								e.printStackTrace();
-								System.out.println("missile was interputed");
+								System.err.println("missile was interputed");
 							}
 						}
 					} 

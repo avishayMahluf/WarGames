@@ -184,7 +184,7 @@ public class ReadXMLFile {
 					mDamage = Integer.parseInt(((Element) (nMissiles.item(j)))
 							.getAttribute("damage"));
 					launcher.addMissile(new Missile(mId, mDestination,
-							mLaunchTime, mFlyTime, mDamage, launcher, fileHandler));
+							mLaunchTime, mFlyTime, mDamage, launcher));
 
 					System.out.println("missile : " + mId);
 					System.out.println("	destination	:	 " + mDestination);

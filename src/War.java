@@ -249,7 +249,7 @@ public class War {
 	 * 
 	 * @param id
 	 */
-	public void addLauncher(String id){
+	public void addLauncher(int id){
 		
 	}
 	

@@ -1,10 +1,9 @@
 import java.util.List;
 import java.util.Comparator;
-import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.sun.org.glassfish.external.statistics.Statistic;
+
 
 public class Missile extends Thread {
 	public enum State {
@@ -21,7 +20,6 @@ public class Missile extends Thread {
 	private Object Lock;
 	private boolean started;
 	private Launcher launcher;
-	private FileHandler fileHandler;
 	private Statistics statistics;
 	
 	
@@ -38,11 +36,10 @@ public class Missile extends Thread {
  * @param Damage
  * @param TheLauncher
  * @param missileState
- * @param 
  * @param logger
  */
 	public Missile(String Id, String Destination, int LaunchTime, int FlyTime,
-			int Damage, Launcher TheLauncher,FileHandler fileHandler){
+			int Damage, Launcher TheLauncher){
 		this.id = Id;
 		this.launcTime = LaunchTime;
 		this.flyTime = FlyTime;
@@ -51,9 +48,8 @@ public class Missile extends Thread {
 		this.launcher = TheLauncher;
 		missileState = State.OnGround;
 		try{
-			this.fileHandler = fileHandler;
-			//logger = Logger.getLogger("War.Logger");
-			//logger.addHandler(fileHandler);
+
+			logger = Logger.getLogger("War.Logger");
 			
 		}catch(Exception e){
 			System.out.println("Missile #"+this.id +" logger didn't started");
@@ -93,10 +89,6 @@ public class Missile extends Thread {
 
 	public void setDestructAfterLaunch(int destructAfterLaunch) {
 		this.destructAfterLaunch = destructAfterLaunch;
-	}
-
-	public void setFileHandler(FileHandler fileHandler) {
-		this.fileHandler = fileHandler;
 	}
 
 	public String getMissileId() {
