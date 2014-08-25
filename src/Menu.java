@@ -39,9 +39,12 @@ public class Menu {
 			e.printStackTrace();
 		}
 	}
-
+	/**
+	 * 
+	 */
 	public void addLauncher() {
-
+		System.out.println("Add new missile launcher");
+		s
 	}
 
 	/**
@@ -64,28 +67,45 @@ public class Menu {
 	 * Lunch missile, "takes time"
 	 */
 	public void missileLunch() {
-
+		boolean hasLaunchers=false;
 		System.out.println("Launch missile");
 
 		for (Launcher launcher : war.getMissileLaunchers()) {
-			System.out.println(launcher.getLauncherId() + " : launcher");
+			if (!launcher.isDestroyed()){
+				hasLaunchers=true;
+				System.out.println(launcher.getLauncherId() + " : launcher");
+			}
 
 		}
-		System.out.println("Enter launcher id: L");
-
-		int lId = s.nextInt();
-		Launcher l = war.getMissileLaunchers().get(
-				war.getMissileLaunchers().indexOf(new Launcher("L" + lId)));
-		System.out.println("New missile id:");
-		int mId = s.nextInt();
-		System.out.println("fly time:");
-		int mFlyTime = s.nextInt();
-		System.out.println("Damage:");
-		int mDamage = s.nextInt();
-		System.out.println("Destenation:");
-		String mDest = s.next();
-		l.addMissile(new Missile("M" + mId, mDest, 0, mFlyTime, mDamage, l));
-
+		if(hasLaunchers){
+			System.out.println("Enter launcher id: L");
+	
+			int lId = s.nextInt();
+			Launcher l;
+			try{
+			l = war.getMissileLaunchers().get(
+					war.getMissileLaunchers().indexOf(new Launcher("L" + lId)));
+			} catch (IndexOutOfBoundsException e){
+				System.err.println("Launcher id was not found");
+				return;
+			}
+			if (!l.isDestroyed()){
+				System.out.println("New missile id:");
+				int mId = s.nextInt();
+				System.out.println("fly time:");
+				int mFlyTime = s.nextInt();
+				System.out.println("Damage:");
+				int mDamage = s.nextInt();
+				System.out.println("Destenation:");
+				String mDest = s.next();
+				l.addMissile(new Missile("M" + mId, mDest, 0, mFlyTime, mDamage, l));
+			} else {
+				System.err.println("Launcher is destroyed!");
+			}
+			
+		} else {
+			System.err.println("All launchers are destroyed");
+		}
 	}
 
 	/**
@@ -135,14 +155,19 @@ public class Menu {
 			}
 			System.out.printf("Enter : #");
 			int dId = s.nextInt();
-			Destructor selectedDestractor = war.getMissileDestructors().get(
+			try{
+				Destructor selectedDestractor = war.getMissileDestructors().get(
 					dId - 1);
-			if (selectedDestractor.intercept(selectedMissile))
-				System.out.println("MISSILE " + selectedMissile.getMissileId()
-						+ " WAS INTERCEPTED!");
-			else
-				System.out.println("MISSILE " + selectedMissile.getMissileId()
-						+ " WAS MISSED!");
+			
+				if (selectedDestractor.intercept(selectedMissile))
+					System.out.println("MISSILE " + selectedMissile.getMissileId()
+							+ " WAS INTERCEPTED!");
+				else
+					System.out.println("MISSILE " + selectedMissile.getMissileId()
+							+ " WAS MISSED!");
+			} catch (Exception e) {
+				System.err.println("Id was not found");
+			}
 		} else {
 			System.out.println("No missiles in the air");
 		}
