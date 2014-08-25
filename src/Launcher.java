@@ -208,8 +208,8 @@ public class Launcher extends Thread {
 	 * 
 	 *
 	 */
-static class DestructComparator implements Comparator<Launcher>
-{
+	static class DestructComparator implements Comparator<Launcher>
+	{
 
 	@Override
 	public int compare(Launcher l1, Launcher l2) {
