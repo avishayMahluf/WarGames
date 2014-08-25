@@ -198,8 +198,10 @@ public class Launcher extends Thread {
 
 					if (m.getLauncTime() == War.WarTimeInSeconds
 							|| m.getLauncTime() == 0) {
+						
 						m.setLock(Lock);
 						m.setStatistics(stats);
+						logger.log(Level.INFO,toStringMissile(m),this);
 						m.start();
 						stats.addMissileLaunch();
 						synchronized (this) {
@@ -225,6 +227,10 @@ public class Launcher extends Thread {
 
 		} // end While
 
+	}
+	private String toStringMissile(Missile m) {
+		
+		return null;
 	}
 	/**
 	 * 
