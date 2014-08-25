@@ -175,8 +175,10 @@ public class Launcher extends Thread {
 
 			@Override
 			public void run() {
-				isHidden = true;
-				logger.log(Level.INFO, this.toString() + " is hidden",this);
+				if(!isDestroyed){
+					isHidden = true;
+					logger.log(Level.INFO, this.toString() + " is hidden",this);
+				}
 				this.cancel();
 
 			}
@@ -201,15 +203,25 @@ public class Launcher extends Thread {
 						
 						m.setLock(Lock);
 						m.setStatistics(stats);
-						logger.log(Level.INFO,toStringMissile(m),this);
 						m.start();
+						logger.log(Level.INFO,this.toString() 
+								+ " launched " + m.toString(),this);
 						stats.addMissileLaunch();
+						
 						synchronized (this) {
 							try {
-								wait();
 								peek();
 								wait();
 								missiles.poll();
+								if(m.getMissileState() == Missile.State.Hit){
+									logger.log(Level.INFO,m.toString() 
+											+" " + m.getMissileState().toString() 
+											+ "s and caused " + m.getDamage() 
+											+ " damage",this);
+								}else{
+									logger.log(Level.INFO, m.toString() 
+											+ " " + m.getMissileState().toString() );
+								}
 							} catch (InterruptedException e) {
 
 								e.printStackTrace();
@@ -222,7 +234,7 @@ public class Launcher extends Thread {
 				sleep(100);
 
 			} catch (Exception e) {
-				System.err.println("Launcher " + id + " reloads!");
+				System.err.println("Launcher: " + id + " reloads!");
 			}
 
 		} // end While

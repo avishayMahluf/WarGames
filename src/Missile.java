@@ -22,7 +22,7 @@ public class Missile extends Thread {
 	private Launcher launcher;
 	private Statistics statistics;
 	
-	
+
 	public boolean isStarted() {
 		return started;
 	}
@@ -151,17 +151,14 @@ public class Missile extends Thread {
 
 			synchronized (Lock) {
 				logger.log(Level.INFO,toString() + " Launched",this);
-				synchronized (launcher) {
-					launcher.notify();
-				}
-				missileState = State.Flying;
 
+				missileState = State.Flying;
 				sleep(flyTime * 1000);
 				if (missileState != State.Intercepted) {
 					missileState = State.Hit;
 					logger.log(Level.INFO,"Missile id #" 
 							+ this.id + " Hit target "
-							+ destination,this);
+							+ destination);
 					if(statistics!=null){
 						statistics.addMissileHit();
 						try {
@@ -193,6 +190,8 @@ public class Missile extends Thread {
 
 	}
 
+
+	
 	@Override
 	public String toString() {
 

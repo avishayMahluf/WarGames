@@ -1,15 +1,19 @@
 import java.util.Comparator;
 import java.util.PriorityQueue;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
 
 public class Destructor extends Thread {
 
 	private PriorityQueue<Launcher> destructdLauncher;
 	private PriorityQueue<Missile> destructdMissile;
-	private Object LockMissile;
-	private Object LockLuncher;
+//	private Object LockMissile;
+//	private Object LockLuncher;
 	private String id;
 	private boolean isActive;
 	private Statistics stats;
+	private FileHandler fileHandler;
+	private static Logger logger;
 	private final static String DEAFULT_ID = "D00";
 
 	public enum Type {
@@ -20,7 +24,7 @@ public class Destructor extends Thread {
 
 	public Destructor() {
 		this.id = DEAFULT_ID; // Default id
-		LockMissile = new Object();
+//		LockMissile = new Object();
 	}
 
 	
@@ -30,7 +34,7 @@ public class Destructor extends Thread {
 				(Comparator<? super Missile>) (new Missile.MissileDestructComparator()));
 		this.id = dId;
 		dType = Type.iron_dome;
-		LockMissile = new Object();
+//		LockMissile = new Object();
 		isActive = true;
 
 	}
@@ -40,7 +44,7 @@ public class Destructor extends Thread {
 		destructdLauncher = new PriorityQueue<Launcher>(
 				(Comparator<? super Launcher>) (new Launcher.DestructComparator()));
 		this.dType = type;
-		LockLuncher = new Object();
+//		LockLuncher = new Object();
 		isActive = true;
 	}
 
@@ -50,9 +54,22 @@ public class Destructor extends Thread {
 				(Comparator<? super Missile>) (new Missile.MissileDestructComparator()));
 		this.id = dId;
 		dType = Type.iron_dome;
-		LockMissile = new Object();
+//		LockMissile = new Object();
 		isActive = true;
 		this.stats = stats;
+		
+		try {
+			fileHandler = new FileHandler("Destructor_IronDome_"+this.id+".txt",false);
+			fileHandler.setFilter(new ObjectFilter(this));
+			fileHandler.setFormatter(new WarFormatter());
+			
+			logger = Logger.getLogger("War.Logger");
+			logger.addHandler(fileHandler);
+			logger.setUseParentHandlers(false);
+			
+		} catch (Exception e) {
+			System.err.println("Destructor_IronDome #" + this.id +" logger didn't started");
+		}
 	}
 
 	public Destructor(Type type, Statistics stats) {
@@ -60,9 +77,23 @@ public class Destructor extends Thread {
 		destructdLauncher = new PriorityQueue<Launcher>(
 				(Comparator<? super Launcher>) (new Launcher.DestructComparator()));
 		this.dType = type;
-		LockLuncher = new Object();
+//		LockLuncher = new Object();
 		isActive = true;
 		this.stats = stats;
+		
+		try {
+			fileHandler = new FileHandler("Destructor_" + type.toString() 
+					+ "_" +this.id + ".txt",false);
+			fileHandler.setFilter(new ObjectFilter(this));
+			fileHandler.setFormatter(new WarFormatter());
+			
+			logger = Logger.getLogger("War.Logger");
+			logger.addHandler(fileHandler);
+			logger.setUseParentHandlers(false);
+			
+		} catch (Exception e) {
+			System.err.println("Destructor_IronDome #" + this.id +" logger didn't started");
+		}
 	}
 
 	public void setStatistics(Statistics s) {
