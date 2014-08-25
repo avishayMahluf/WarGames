@@ -20,9 +20,19 @@ public class Menu {
 		this.war = war;
 		s = new Scanner(System.in);
 	}
-
+/**
+ * Add Missile launcher destructor to current war
+ */
 	public void addMissileLauncherDestructor() {
-
+		System.out.println("Add new missile launcher destructor");
+		System.out.println("Enter type (ship | plane)");
+		String dType = s.nextLine();
+		try{
+		Destructor.Type.valueOf(dType.trim());
+		war.addLauncherDestructor(dType);
+		} catch (IllegalArgumentException | NullPointerException e) {
+			System.err.println("Wrong type");
+		}
 	}
 
 	/**
@@ -40,7 +50,7 @@ public class Menu {
 		}
 	}
 	/**
-	 * 
+	 * Add Launcher to current war
 	 */
 	public void addLauncher() {
 		System.out.println("Add new missile launcher");
@@ -48,7 +58,7 @@ public class Menu {
 		int lId;
 		try{
 			lId = s.nextInt();
-			//war.addLauncherDestructor(lId);
+			war.addLauncher(lId);
 		} catch (Exception e) {
 			System.out.println("Enter numbers only");
 		}
