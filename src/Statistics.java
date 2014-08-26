@@ -79,7 +79,7 @@ public class Statistics {
 		String ret = "\t **Statistics** \n" +
 				"Number of missile launched:\t"+missileLaunched +
 				"\nNumber of missile intersepted:\t"+missileIntercepted+
-				"\nNumber of missile targer hit:\t"+missileHit+
+				"\nNumber of missile target hit:\t"+missileHit+
 				"\nNumber of destroid launchers:\t"+destroidLaunchers+
 				"\nTotal damage is:\t\t"+totalDamage+"\n";
 		return ret;

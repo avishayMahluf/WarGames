@@ -4,6 +4,7 @@ import java.util.Scanner;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.FileHandler;
+import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -177,6 +178,7 @@ public class War {
 		Menu function = new Menu(this);
 		Scanner s = new Scanner(System.in);
 		while (this.isStarted()) {
+			System.out.println("\n");
 			for (int i = 0; i < menuList.length; i++) {
 				System.out.println((i + 1) + " - " + menuList[i]);
 			}
@@ -205,6 +207,11 @@ public class War {
 				break;
 			case 8:
 				function.endWarGame();
+				logger.log(Level.INFO, "War Ended");
+				for(Handler h:logger.getHandlers()){
+					h.close();
+				}
+				System.exit(0);
 				break;
 
 			default:
@@ -250,7 +257,7 @@ public class War {
 	 * @param id
 	 */
 	public void addLauncher(int id){
-		missileLaunchers.add(new Launcher("" + id));
+		missileLaunchers.add(new Launcher("L" + id));
 		
 	}
 	

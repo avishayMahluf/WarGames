@@ -54,14 +54,15 @@ public class Menu {
 	 */
 	public void addLauncher() {
 		System.out.println("Add new missile launcher");
-		System.out.println("Enter id:");
+		System.out.print("Enter id: L");
 		int lId;
 		try{
 			lId = s.nextInt();
 			war.addLauncher(lId);
 			System.out.println("Launcher was created successfully");
 		} catch (Exception e) {
-			System.out.println("Enter numbers only");
+			System.err.println("WRONG INPUT: Enter numbers only!");
+			s.nextLine();
 		}
 		
 	}
@@ -97,7 +98,7 @@ public class Menu {
 
 		}
 		if(hasLaunchers){
-			System.out.println("Enter launcher id: L");
+			System.out.print("Enter launcher id: L");
 	
 			int lId = s.nextInt();
 			Launcher l;
@@ -108,21 +109,26 @@ public class Menu {
 				System.err.println("Launcher id was not found");
 				return;
 			}
+			try{
 			if (!l.isDestroyed()){
-				System.out.println("New missile id:");
+				System.out.print("New missile id: M");
 				int mId = s.nextInt();
-				System.out.println("fly time:");
+				System.out.println("Fly time:");
 				int mFlyTime = s.nextInt();
 				System.out.println("Damage:");
 				int mDamage = s.nextInt();
 				System.out.println("Destenation:");
 				String mDest = s.next();
 				l.addMissile(new Missile("M" + mId, mDest, 0, mFlyTime, mDamage, l));
-			} else {
+			}else {
 				System.err.println("Launcher is destroyed!");
 			}
 			
-		} else {
+		}catch(Exception e){
+			System.err.println("WRONG INPUT: Only numbers!");
+		}
+			
+		}else {
 			System.err.println("All launchers are destroyed");
 		}
 	}
@@ -206,7 +212,6 @@ public class Menu {
 
 		showStatistics();
 		System.out.println("ISIS send it's best regards...");
-		System.exit(0);
 		
 	}
 }
