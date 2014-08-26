@@ -132,7 +132,7 @@ public class Destructor extends Thread {
 
 				if (m != null) {
 
-					if (m.getDestructAfterLaunch() == War.WarTimeInSeconds) {
+					if (m.getDestructAfterLaunch() == War.WarTimeInSeconds || m.getDestructAfterLaunch() == 0) {
 						logger.log(Level.INFO, "Trying to intercept "
 								+ m.toString(),this);
 						intercept(m);
@@ -151,7 +151,7 @@ public class Destructor extends Thread {
 		while (isActive) {
 			try {
 				Launcher l = destructdLauncher.peek();
-				if (l.getDestructTime() == War.WarTimeInSeconds) {
+				if (l.getDestructTime() == War.WarTimeInSeconds || l.getDestructTime() == 0) {
 					logger.log(Level.INFO,"Trying to destroy " + l.toString(),this);
 					if (l.destroyLauncher()) {
 						logger.log(Level.INFO,l.toString() + " Distroyed!!",this);

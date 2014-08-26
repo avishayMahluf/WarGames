@@ -22,6 +22,7 @@ public class Menu {
 									"End war game" };
 	/**
 	 * Menu constructor
+	 * Displays console menu for actions
 	 * 
 	 * @param war
 	 */
@@ -119,13 +120,19 @@ public class Menu {
 	public void addLauncherDestructor() {
 		System.out.println("Add launcher destructor");
 		System.out.printf("Enter type :\n plane or ship \n ");
+		String lType = s.next();
+		try{
+			Destructor.Type.valueOf(lType);
 
-		try {
-			war.addLauncherDestructor(s.next());
-			System.out.println("\nLauncher destructor added");
-		} catch (Exception e) {
-			System.out.println("Failed to add launcher destructor");
-			e.printStackTrace();
+			try {
+				war.addLauncherDestructor(lType);
+				System.out.println("\nLauncher destructor added");
+			} catch (Exception e) {
+				System.out.println("Failed to add launcher destructor");
+				//e.printStackTrace();
+			}
+		} catch ( IllegalArgumentException ee)  {
+			System.out.println("No such type of destructor");
 		}
 	}
 
@@ -183,24 +190,42 @@ public class Menu {
 	 * Launcher destroyer, "takes time" destroys only visible launchers
 	 */
 	public void launcherIntercept() {
+		boolean visbleLaunchers=false;
 		List<Launcher> launchers = war.getMissileLaunchers();
 		System.out.println("Vissble missile launchers:");
 		for (Launcher launcher : launchers) {
 			if (!launcher.isHidden() && !launcher.isDestroyed()) {
 				System.out.println("Launcher id: " + launcher.getLauncherId());
-
+				visbleLaunchers=true;
 			}
+		}
+		if (visbleLaunchers){
+			System.out.println("Avileble launcher distractors:");
+			for (int i=0; i < war.getMissileLauncherDestructors().size();i++){
+				System.out.println((i+1) + "# " + war.getMissileLauncherDestructors().get(i).toString());
+			}
+			int indexNum = 0;
+			System.out.print("Enter the index number to select destractor: #");
+			try{
+				indexNum = s.nextInt();
+				if (!(indexNum > 0 && indexNum < war.getMissileLauncherDestructors().size())){
+					return;
+				}
+			} catch (Exception e) {}
 			System.out.printf("Enter Launcher id: L");
 			try {
 				String lId = "L" + s.nextInt();
-				if (launchers.get(launchers.indexOf(new Launcher(lId)))
-						.destroyLauncher()) {
-					System.out.println("Launcher destroyed!!!");
-				}
+				
+				war.getMissileLauncherDestructors().get(indexNum-1).addDestructLauncher(launchers.get(launchers.indexOf(new Launcher(lId))));
+				System.out.println("Target added to destructor");
+				
 			} catch (ArrayIndexOutOfBoundsException e) {
 				System.out.println("Launcher was not found!");
 			}
+		} else {
+			System.out.println("Didn't find any launchers");
 		}
+
 	}
 
 	/**
@@ -269,9 +294,10 @@ public class Menu {
 		for(Handler h:war.getLogger().getHandlers()){
 			h.close();
 		}
+		s.close();
 		System.out.println("ISIS send its best regards...");
-		war.endWar();
-		//System.exit(0);
+		//war.endWar();
+		System.exit(0);
 		
 	}
 }

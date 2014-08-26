@@ -47,6 +47,7 @@ public class Missile extends Thread {
 		this.destination = Destination;
 		this.launcher = TheLauncher;
 		missileState = State.OnGround;
+		destructAfterLaunch = 0;
 		try{
 
 			logger = Logger.getLogger("War.Logger");

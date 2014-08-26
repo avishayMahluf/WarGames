@@ -191,8 +191,10 @@ public class War {
 	 * Add launcher destructor to list
 	 */
 	public void addLauncherDestructor(String type) {
-		missileLauncherDestructors.add(new Destructor(Destructor.Type
-				.valueOf(type)));
+		Destructor tmp = new Destructor(Destructor.Type
+				.valueOf(type),stats);
+		tmp.start();
+		missileLauncherDestructors.add(tmp);
 	}
 	/**
 	 * 
