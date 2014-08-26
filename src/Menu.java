@@ -1,5 +1,7 @@
 import java.util.List;
 import java.util.Scanner;
+import java.util.logging.Handler;
+import java.util.logging.Level;
 
 /**
  * 
@@ -10,7 +12,14 @@ public class Menu {
 
 	private War war;
 	private Scanner s;
-
+	private String[] menuList = { 	"Add launcher destructor",
+									"Add missile destructor", 
+									"Add launcher",
+									"Launch missile",
+									"Intercept launcher",
+									"Intercept missile",
+									"Show statistics",
+									"End war game" };
 	/**
 	 * Menu constructor
 	 * 
@@ -19,6 +28,43 @@ public class Menu {
 	public Menu(War war) {
 		this.war = war;
 		s = new Scanner(System.in);
+		
+		while (war.isStarted()) {
+			System.out.println("\n");
+			for (int i = 0; i < menuList.length; i++) {
+				System.out.println((i + 1) + " - " + menuList[i]);
+			}
+			int action = s.nextInt();
+			switch (action) {
+			case 1:
+				addLauncherDestructor();
+				break;
+			case 2:
+				addMissileDestructor();
+				break;
+			case 3:
+				addLauncher();
+				break;
+			case 4:
+				missileLunch();
+				break;
+			case 5:
+				launcherIntercept();
+				break;
+			case 6:
+				missileIntercept();
+				break;
+			case 7:
+				showStatistics();
+				break;
+			case 8:
+				endWarGame();
+				break;
+
+			default:
+				break;
+			}
+		}
 	}
 /**
  * Add Missile launcher destructor to current war
@@ -219,7 +265,13 @@ public class Menu {
 	public void endWarGame() {
 
 		showStatistics();
-		System.out.println("ISIS send it's best regards...");
+		war.getLogger().log(Level.INFO, "War Ended");
+		for(Handler h:war.getLogger().getHandlers()){
+			h.close();
+		}
+		System.out.println("ISIS send its best regards...");
+		war.endWar();
+		//System.exit(0);
 		
 	}
 }

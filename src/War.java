@@ -1,32 +1,27 @@
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.FileHandler;
-import java.util.logging.Handler;
+//import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
-/*
- * WarGames main class
- */
-
 /**
  * 
- * Main program class that lunches the system into activity
+ * War class is a simulation of some kind of war in the middle east.
  * 
  * @author by Kosta Lazarev & Omri Glam
  * @version 25/08/2014
  */
 public class War {
 
-	public static final String CONFIG_FILE = "war.xml";
+	
 	/**
 	 * The game works on a clock that logs events. the tick set in mili seconds.
 	 */
 	public static final int TIMER_TICK = 1000;
+	private static final String WAR_LOG_FILE = "WarLog.txt";
 	private List<Destructor> missileDestructors;
 	private List<Destructor> missileLauncherDestructors;
 	private List<Launcher> missileLaunchers;
@@ -53,10 +48,12 @@ public class War {
 		addFileHandler();
 
 	}
-
+/**
+ * Inner method for creating file handler for war log
+ */
 	private void addFileHandler() {
 		try{		
-			fileHandler = new FileHandler("WarLog.txt");
+			fileHandler = new FileHandler(WAR_LOG_FILE);
 			fileHandler.setFormatter(new WarFormatter());
 			logger = Logger.getLogger("War.Logger");
 			logger.addHandler(fileHandler);
@@ -68,9 +65,10 @@ public class War {
 	}
 
 	/**
-	 * Start seconds counting
+	 * Inner method for starting simulation war clock (seconds ticker)
+	 * the speed of the simulation is determined by TIMER_TICK constant
 	 */
-	protected void startWarTimer() {
+	private void startWarTimer() {
 		logger.log(Level.INFO,"War Clock Started");
 		WarTimer.scheduleAtFixedRate(new TimerTask() {
 
@@ -91,14 +89,24 @@ public class War {
 	 * End war game, stops timer
 	 */
 	protected void endWar() {
-		// TODO Auto-generated method stub
+		for (Launcher mLauncer : missileLaunchers) {
+			mLauncer.interrupt();
+		}
+		for (Destructor destructor : missileDestructors) {
+			destructor.interrupt();
+		}
+		for (Destructor destructor : missileLauncherDestructors) {
+			destructor.interrupt();
+		}
+		WarTimer.cancel();
 
 	}
 
 	/**
-	 * Starts game By starting all threads from config file
+	 * Starts the simulation by starting all threads that were loaded from config file
+	 * and starts the simulation timer
 	 */
-	private void startWar() {
+	public void startWar() {
 		startWarTimer();
 		logger.log(Level.INFO,"War has started");
 		for (Launcher mLauncer : missileLaunchers) {
@@ -113,31 +121,10 @@ public class War {
 
 	}
 
-	/**
-	 * Main functions
-	 * 
-	 * @param args
-	 */
-	public static void main(String[] args) {
-
-		War warGames = new War();
-
-		try {
-
-			ReadXMLFile.getData(CONFIG_FILE, warGames.getMissileLaunchers(),
-					warGames.getMissileDestructors(),
-					warGames.getMissileLauncherDestructors(),warGames.stats,warGames.fileHandler);
-
-			warGames.startWar();
-			warGames.showMenu();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-	}
+	
 /**
  * Missiles that are in the air right now
- * @return
+ * @return inAirMissiles
  */
 	public List<Missile> getInAirMissiles() {
 		return inAirMissiles;
@@ -170,54 +157,9 @@ public class War {
 	 * Prints menu and selections
 	 */
 	public void showMenu() {
-		String[] menuList = { "Add launcher destructor",
-				"Add missile destructor", "Add launcher", "Launch missile",
-				"Intercept launcher", "Intercept missile", "Show statistics",
-				"End war game" };
-
-		Menu function = new Menu(this);
-		Scanner s = new Scanner(System.in);
-		while (this.isStarted()) {
-			System.out.println("\n");
-			for (int i = 0; i < menuList.length; i++) {
-				System.out.println((i + 1) + " - " + menuList[i]);
-			}
-			int action = s.nextInt();
-			switch (action) {
-			case 1:
-				function.addLauncherDestructor();
-				break;
-			case 2:
-				function.addMissileDestructor();
-				break;
-			case 3:
-				function.addLauncher();
-				break;
-			case 4:
-				function.missileLunch();
-				break;
-			case 5:
-				function.launcherIntercept();
-				break;
-			case 6:
-				function.missileIntercept();
-				break;
-			case 7:
-				function.showStatistics();
-				break;
-			case 8:
-				function.endWarGame();
-				logger.log(Level.INFO, "War Ended");
-				for(Handler h:logger.getHandlers()){
-					h.close();
-				}
-				System.exit(0);
-				break;
-
-			default:
-				break;
-			}
-		}
+		
+		@SuppressWarnings("unused")
+		Menu menu = new Menu(this);
 
 	}
 
@@ -262,7 +204,9 @@ public class War {
 		missileLaunchers.add(tmp);
 		
 	}
-	
+	public Logger getLogger(){
+		return logger;
+	}
 	public FileHandler getFileHandler(){
 		return fileHandler;
 	}
