@@ -11,8 +11,8 @@ import java.util.logging.Logger;
 
 public class Launcher extends Thread {
 
-	private static final int MIN_PEEK = 3000;
-	private static final int MAX_PEEK = 9000;
+	private static final int MIN_PEEK = 6000;
+	private static final int MAX_PEEK = 15000;
 	
 	private static Logger logger;
 	private PriorityQueue<Missile> missiles;
@@ -220,7 +220,7 @@ public class Launcher extends Thread {
 											+ " damage",this);
 								}else{
 									logger.log(Level.INFO, m.toString() 
-											+ " " + m.getMissileState().toString() );
+											+ " " + m.getMissileState().toString(),this);
 								}
 							} catch (InterruptedException e) {
 
