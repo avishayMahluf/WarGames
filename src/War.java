@@ -257,7 +257,9 @@ public class War {
 	 * @param id
 	 */
 	public void addLauncher(int id){
-		missileLaunchers.add(new Launcher("L" + id));
+		Launcher tmp = new Launcher("L" + id,true,stats);
+		tmp.start();
+		missileLaunchers.add(tmp);
 		
 	}
 	

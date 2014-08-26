@@ -170,7 +170,15 @@ public class Menu {
 						+ " in flight");
 			}
 			System.out.printf("Enter missile id to intercept: M");
-			int mId = s.nextInt();
+			s.nextLine(); // clean buffer
+			int mId;
+			try{
+				mId= s.nextInt();
+			}catch (Exception e){
+				System.err.println("Id must be a number");
+				return;
+			}
+			
 
 			Missile selectedMissile = Missile.getMissileFromList(
 					war.getInAirMissiles(), "M" + mId);

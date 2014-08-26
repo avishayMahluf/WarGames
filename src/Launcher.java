@@ -234,7 +234,8 @@ public class Launcher extends Thread {
 				sleep(100);
 
 			} catch (Exception e) {
-				System.err.println("Launcher: " + id + " reloads!");
+				e.printStackTrace();
+				System.err.println(this.toString() + " reloads!");
 			}
 
 		} // end While
