@@ -154,8 +154,6 @@ public class Missile extends Thread {
 		try {
 
 			synchronized (Lock) {
-				//logger.log(Level.INFO,toString() + " Launched",this);
-
 				missileState = State.Flying;
 				sleep(flyTime * 1000);
 				if (missileState != State.Intercepted) {
@@ -186,7 +184,6 @@ public class Missile extends Thread {
 			synchronized (launcher) {
 				launcher.notify();
 			}
-			// e.printStackTrace();
 		}
 
 	}

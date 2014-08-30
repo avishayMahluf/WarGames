@@ -34,9 +34,10 @@ public class Menu {
 	 */
 	public Menu(War war) {
 		this.war = war;
-		s = new Scanner(System.in);
+		
 		
 		while (war.isStarted()) {
+			s = new Scanner(System.in);
 			System.out.println("\n");
 			for (int i = 0; i < menuList.length; i++) {
 				System.out.println((i + 1) + " - " + menuList[i]);
@@ -95,11 +96,11 @@ public class Menu {
 		System.out.println("Adding missile destructor");
 		System.out.printf("Enter id number : ");
 		try {
-			war.addMissileDestructor(s.nextInt());
+			int tempId = s.nextInt();
+			war.addMissileDestructor(tempId);
 			System.out.println("\nMissile launcher destructor added");
 		} catch (Exception e) {
-			System.out.println("Failed to add missile launcher destructor");
-			e.printStackTrace();
+			System.err.println("WRONG INPUT: Enter numbers only!");
 		}
 	}
 	/**
@@ -158,15 +159,15 @@ public class Menu {
 		}
 		if(hasLaunchers){
 			System.out.print("Enter launcher id: L");
-	
-			int lId = s.nextInt();
-			Launcher l;
+			Launcher l=null;
 			try{
-			l = war.getMissileLaunchers().get(
-					war.getMissileLaunchers().indexOf(new Launcher("L" + lId)));
+			int lId = s.nextInt();
+			l = war.getMissileLaunchers().get(war.getMissileLaunchers().indexOf(new Launcher("L" + lId)));
 			} catch (IndexOutOfBoundsException e){
-				System.err.println("Launcher id was not found");
+				System.out.println("Launcher id was not found!");
 				return;
+			} catch(Exception e){
+				System.err.println("WRONG INPUT: Only numbers!");
 			}
 			try{
 			if (!l.isDestroyed()){
@@ -229,6 +230,8 @@ public class Menu {
 				
 			} catch (ArrayIndexOutOfBoundsException e) {
 				System.out.println("Launcher was not found!");
+			} catch(Exception e){
+				System.err.println("WRONG INPUT: Only numbers!");
 			}
 		} else {
 			System.out.println("Didn't find any launchers");
@@ -266,16 +269,19 @@ public class Menu {
 				System.out.println("#" + i++ + " - " + d.getDestructorId());
 			}
 			System.out.printf("Enter index number: #");
-			int dId = s.nextInt();
+			
 			try{
+				int dId = s.nextInt();
 				Destructor selectedDestractor = war.getMissileDestructors().get(
 					dId - 1);
 			
 				selectedDestractor.addDestructMissile(selectedMissile);
 				System.out.println(selectedMissile.toString() + " was set for interception");
 
-			} catch (Exception e) {
+			} catch (ArrayIndexOutOfBoundsException e) {
 				System.err.println("Id was not found");
+			} catch (Exception e){
+				System.err.println("WRONG INPUT: Only numbers!");
 			}
 		} else {
 			System.out.println("No missiles in the air");
