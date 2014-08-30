@@ -1,4 +1,14 @@
-
+package Main;
+/**
+ * Statistics class saves all the war statistics during the war.
+ * <br><br>
+ * Functions links:<br>
+ * {@link #addDamage(int)}<br>
+ * {@link #toString()}<br>
+ * 
+ * @author Kosta Lazarev & Omri Glam
+ * 
+ */
 public class Statistics {
 
 	private int missileLaunched;

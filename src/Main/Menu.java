@@ -1,11 +1,17 @@
+package Main;
 import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 
+import WarWeapons.Destructor;
+import WarWeapons.Launcher;
+import WarWeapons.Missile;
+import WarWeapons.Destructor.Type;
+
 /**
  * 
- * @author Kosta Lazarev
+ * @author Kosta Lazarev & Omri Glam
  *
  */
 public class Menu {
@@ -166,13 +172,14 @@ public class Menu {
 			if (!l.isDestroyed()){
 				System.out.print("New missile id: M");
 				int mId = s.nextInt();
-				System.out.println("Fly time:");
+				System.out.print("Fly time: ");
 				int mFlyTime = s.nextInt();
-				System.out.println("Damage:");
+				System.out.print("Damage: ");
 				int mDamage = s.nextInt();
-				System.out.println("Destenation:");
+				System.out.print("Destenation: ");
 				String mDest = s.next();
 				l.addMissile(new Missile("M" + mId, mDest, 0, mFlyTime, mDamage, l));
+				System.out.println("Missile #M"+ mId + " to " + mDest + " was added to launch queue successfully");
 			}else {
 				System.err.println("Launcher is destroyed!");
 			}
@@ -208,7 +215,8 @@ public class Menu {
 			System.out.print("Enter the index number to select destractor: #");
 			try{
 				indexNum = s.nextInt();
-				if (!(indexNum > 0 && indexNum < war.getMissileLauncherDestructors().size())){
+				if (!(indexNum > 0 && indexNum <= war.getMissileLauncherDestructors().size())){
+					System.err.println("Index was not found");
 					return;
 				}
 			} catch (Exception e) {}
@@ -216,7 +224,7 @@ public class Menu {
 			try {
 				String lId = "L" + s.nextInt();
 				
-				war.getMissileLauncherDestructors().get(indexNum-1).addDestructLauncher(launchers.get(launchers.indexOf(new Launcher(lId))));
+				war.getMissileLauncherDestructors().get(indexNum-1).addDestructLauncher(launchers.get(launchers.indexOf(new Launcher(lId)))); // a complicated way to do a easy thing...
 				System.out.println("Target added to destructor");
 				
 			} catch (ArrayIndexOutOfBoundsException e) {
@@ -257,18 +265,15 @@ public class Menu {
 			for (Destructor d : war.getMissileDestructors()) {
 				System.out.println("#" + i++ + " - " + d.getDestructorId());
 			}
-			System.out.printf("Enter : #");
+			System.out.printf("Enter index number: #");
 			int dId = s.nextInt();
 			try{
 				Destructor selectedDestractor = war.getMissileDestructors().get(
 					dId - 1);
 			
-				if (selectedDestractor.intercept(selectedMissile))
-					System.out.println("MISSILE " + selectedMissile.getMissileId()
-							+ " WAS INTERCEPTED!");
-				else
-					System.out.println("MISSILE " + selectedMissile.getMissileId()
-							+ " WAS MISSED!");
+				selectedDestractor.addDestructMissile(selectedMissile);
+				System.out.println(selectedMissile.toString() + " was set for interception");
+
 			} catch (Exception e) {
 				System.err.println("Id was not found");
 			}

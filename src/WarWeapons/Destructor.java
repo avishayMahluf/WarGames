@@ -1,8 +1,14 @@
+package WarWeapons;
 import java.util.Comparator;
 import java.util.PriorityQueue;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import Logger.ObjectFilter;
+import Logger.WarFormatter;
+import Main.Statistics;
+import Main.War;
 
 public class Destructor extends Thread {
 

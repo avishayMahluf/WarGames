@@ -1,8 +1,14 @@
+package Logger;
 import java.util.Vector;
 import java.util.logging.Filter;
 import java.util.logging.LogRecord;
 
 /**
+ * ObjectFilter class helps the logger to write in the right object log file
+ * <br><br>
+ * Functions links:<br>
+ * {@link #addFilter(Object)}<br>
+ * {@link #isLoggable(LogRecord)}<br>
  * 
  * @author Kosta Lazarev & Omri Glam
  *

@@ -1,3 +1,4 @@
+package XML;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
@@ -8,11 +9,29 @@ import org.w3c.dom.Node;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
+import Main.Statistics;
+import WarWeapons.Destructor;
+import WarWeapons.Launcher;
+import WarWeapons.Missile;
+import WarWeapons.Destructor.Type;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.logging.FileHandler;
-
+/**
+ * ReadXMLFile class reads the data of the war from the XML file and adds the data to the war.
+ * <br><br>
+ * <b>Functions links:<br></b>
+ * {@link #loadFile(String)} <br>
+ * {@link #getData(String, List, List, List, Statistics, FileHandler)}<br>
+ * {@link #loadMissileDestructor(Document, List, List, Statistics)}<br>
+ * {@link #loadMissileLauncher(Document, List, Statistics, FileHandler)}<br>
+ * {@link #loadMissileLauncherDestructor(Document, List, List, Statistics)}<br>
+ * 
+ * @author Kosta Lazarev & Omri Glam
+ * 
+ */
 public class ReadXMLFile {
 
 	
@@ -105,7 +124,16 @@ public class ReadXMLFile {
 		}
 
 	}
-
+	
+	/**
+	 * 
+	 * @param doc
+	 * @param missileDestructors
+	 * @param missileLaunchers
+	 * @param stats
+	 * @throws Exception
+	 */
+	
 	private static void loadMissileDestructor(Document doc,
 			List<Destructor> missileDestructors, List<Launcher> missileLaunchers, Statistics stats)
 			throws Exception {
@@ -150,7 +178,15 @@ public class ReadXMLFile {
 		}
 
 	}
-
+	
+	/**
+	 * 
+	 * @param doc
+	 * @param missileLaunchers
+	 * @param stats
+	 * @param fileHandler
+	 */
+	
 	private static void loadMissileLauncher(Document doc,
 			List<Launcher> missileLaunchers, Statistics stats,FileHandler fileHandler) {
 		System.out.println("missileLaunchers:");

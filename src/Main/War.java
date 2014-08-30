@@ -1,3 +1,4 @@
+package Main;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -6,6 +7,13 @@ import java.util.logging.FileHandler;
 //import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import Logger.WarFormatter;
+import WarWeapons.Destructor;
+import WarWeapons.Launcher;
+import WarWeapons.Missile;
+import WarWeapons.Destructor.Type;
+import WarWeapons.Missile.State;
 
 /**
  * 
@@ -54,6 +62,7 @@ public class War {
 	private void addFileHandler() {
 		try{		
 			fileHandler = new FileHandler(WAR_LOG_FILE);
+			
 			fileHandler.setFormatter(new WarFormatter());
 			logger = Logger.getLogger("War.Logger");
 			logger.addHandler(fileHandler);
@@ -183,7 +192,9 @@ public class War {
 	 */
 	public void addMissileDestructor(int id) {
 
-		missileDestructors.add(new Destructor("D" + id));
+		Destructor tmp = new Destructor("D" + id,stats);
+		tmp.start();
+		missileDestructors.add(tmp);
 
 	}
 

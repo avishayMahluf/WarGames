@@ -1,7 +1,10 @@
+package WarWeapons;
 import java.util.List;
 import java.util.Comparator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import Main.Statistics;
 
 
 
@@ -21,23 +24,23 @@ public class Missile extends Thread {
 	private boolean started;
 	private Launcher launcher;
 	private Statistics statistics;
-	
+
 
 	public boolean isStarted() {
 		return started;
 	}
-/**
- * Creating a missile, this missile will have to be set fileHandler to work correctly
- * Use the setFileHandlr method.
- * @param Id
- * @param Destination
- * @param LaunchTime
- * @param FlyTime
- * @param Damage
- * @param TheLauncher
- * @param missileState
- * @param logger
- */
+	/**
+	 * Creating a missile, this missile will have to be set fileHandler to work correctly
+	 * Use the setFileHandlr method.
+	 * @param Id
+	 * @param Destination
+	 * @param LaunchTime
+	 * @param FlyTime
+	 * @param Damage
+	 * @param TheLauncher
+	 * @param missileState
+	 * @param logger
+	 */
 	public Missile(String Id, String Destination, int LaunchTime, int FlyTime,
 			int Damage, Launcher TheLauncher){
 		this.id = Id;
@@ -51,16 +54,16 @@ public class Missile extends Thread {
 		try{
 
 			logger = Logger.getLogger("War.Logger");
-			
+
 		}catch(Exception e){
 			System.out.println("Missile #"+this.id +" logger didn't started");
 		}
 	}
 
-/**
- * Intercept (Hit) in air missile
- * @return True if succeeded
- */
+	/**
+	 * Intercept (Hit) in air missile
+	 * @return True if succeeded
+	 */
 	public boolean Intercep() {
 		if (missileState == State.Flying) {
 			missileState = State.Intercepted;
@@ -131,12 +134,12 @@ public class Missile extends Thread {
 		this.Lock = lock;
 
 	}
-/**
- * Returns missile from list by Id
- * @param l Missile List
- * @param id the id
- * @return The Missile with that id
- */
+	/**
+	 * Returns missile from list by Id
+	 * @param l Missile List
+	 * @param id the id
+	 * @return The Missile with that id
+	 */
 	public static Missile getMissileFromList(List<Missile> l, String id) {
 		for (Missile missile : l) {
 			if (missile.equals(id))
@@ -151,21 +154,19 @@ public class Missile extends Thread {
 		try {
 
 			synchronized (Lock) {
-				logger.log(Level.INFO,toString() + " Launched",this);
+				//logger.log(Level.INFO,toString() + " Launched",this);
 
 				missileState = State.Flying;
 				sleep(flyTime * 1000);
 				if (missileState != State.Intercepted) {
 					missileState = State.Hit;
-					logger.log(Level.INFO,"Missile id #" 
-							+ this.id + " Hit target "
-							+ destination);
+
 					if(statistics!=null){
 						statistics.addMissileHit();
 						try {
 							statistics.addDamage(damage);
 						} catch (Exception e) {
-							
+
 							e.printStackTrace();
 						}
 					}
@@ -185,14 +186,13 @@ public class Missile extends Thread {
 			synchronized (launcher) {
 				launcher.notify();
 			}
-			logger.log(Level.INFO,this.toString() + " Was Intercepted!",this);
 			// e.printStackTrace();
 		}
 
 	}
 
 
-	
+
 	@Override
 	public String toString() {
 
@@ -200,8 +200,6 @@ public class Missile extends Thread {
 	}
 
 	/**
-	 * @author Kosta Lazarev
-	 * 
 	 *         Comparator implementation for using priorty queue for launching
 	 *         the missiles by time order. The compare uses the launching time
 	 *         of each missile.
@@ -215,22 +213,19 @@ public class Missile extends Thread {
 			return o1.getLauncTime() - o2.getLauncTime();
 		}
 	}
-		/**
-		 * 
-		 * @author Kosta Lazarev
-		 * 
-		 *         Comparator implementation for using priorty queue for launching
-		 *         the missiles by time order. The compare uses the launching time
-		 *         of each missile.
-		 *
-		 */
+	/**
+	 *         Comparator implementation for using priorty queue for launching
+	 *         the missiles by time order. The compare uses the launching time
+	 *         of each missile.
+	 *
+	 */
 	static class MissileDestructComparator implements Comparator<Missile> {
 
-			@Override
-			public int compare(Missile o1, Missile o2) {
+		@Override
+		public int compare(Missile o1, Missile o2) {
 
-				return o1.getDestructAfterLaunch() - o2.getDestructAfterLaunch();
-			}
+			return o1.getDestructAfterLaunch() - o2.getDestructAfterLaunch();
+		}
 
 	}
 }// end Missile

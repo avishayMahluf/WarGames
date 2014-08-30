@@ -1,3 +1,6 @@
+package Main;
+import XML.ReadXMLFile;
+
 /**
  * 
  */
@@ -9,7 +12,7 @@
 public class Program {
 	public static final String CONFIG_FILE = "war.xml";
 	/**
-	 * @param args 3 years and I still don't know what this is.
+	 * @param args 
 	 */
 	public static void main(String[] args) {
 		
