@@ -122,7 +122,7 @@ public class Launcher extends Thread {
 		this.isHidden = IsHidden;
 
 		try {
-			fileHandler = new FileHandler("Launcher_"+this.id+".txt",false);
+			fileHandler = new FileHandler("./Logs/Launcher_"+this.id+".txt",false);
 			fileHandler.setFilter(new ObjectFilter(this));
 			fileHandler.setFormatter(new WarFormatter());
 

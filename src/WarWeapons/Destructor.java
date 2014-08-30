@@ -66,7 +66,7 @@ public class Destructor extends Thread {
 		this.stats = stats;
 		
 		try {
-			fileHandler = new FileHandler("Destructor_IronDome_"+this.id+".txt",false);
+			fileHandler = new FileHandler("./Logs/Destructor_IronDome_"+this.id+".txt",false);
 			fileHandler.setFilter(new ObjectFilter(this));
 			fileHandler.setFormatter(new WarFormatter());
 			
@@ -89,7 +89,7 @@ public class Destructor extends Thread {
 		this.stats = stats;
 		
 		try {
-			fileHandler = new FileHandler("Destructor_" + type.toString() 
+			fileHandler = new FileHandler("./Logs/Destructor_" + type.toString() 
 					+ "_" +this.getId() + ".txt",false);
 			fileHandler.setFilter(new ObjectFilter(this));
 			fileHandler.setFormatter(new WarFormatter());
