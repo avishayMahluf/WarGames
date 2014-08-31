@@ -2,10 +2,6 @@ package Main;
 import XML.ReadXMLFile;
 
 /**
- * 
- */
-
-/**
  * @author Kosta Lazarev & Omri Glam
  * Main class for launching war application
  */
@@ -19,7 +15,7 @@ public class Program {
 		War warGames = new War();
 
 		try {
-
+			
 			ReadXMLFile.getData(CONFIG_FILE, warGames.getMissileLaunchers(),
 					warGames.getMissileDestructors(),
 					warGames.getMissileLauncherDestructors(),warGames.getStatistics(),warGames.getFileHandler());

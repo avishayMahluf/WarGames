@@ -1,0 +1,23 @@
+01/09/14 00:50:07 War Clock Started
+01/09/14 00:50:07 War has started
+01/09/14 00:50:07 Launcher #L101 is activated
+01/09/14 00:50:07 Launcher #L102 is activated
+01/09/14 00:50:08 Trying to intercept Missile: #M4 To Beer-Sheva
+01/09/14 00:50:08 Launcher #L101 launched Missile: #M1 To Sderot
+01/09/14 00:50:08 Launcher #L101 is visible
+01/09/14 00:50:09 Trying to intercept Missile: #M2 To Beer-Sheva
+01/09/14 00:50:10 Trying to destroy Launcher #L101
+01/09/14 00:50:10 Launcher #L101 Distroyed!!
+01/09/14 00:50:10 Trying to intercept Missile: #M1 To Sderot
+01/09/14 00:50:10 Missile: #M1 To Sderot was Intercepted
+01/09/14 00:50:10 Destructor type:iron_dome, 19 Intercepted Missile: #M1 To Sderot
+01/09/14 00:50:10 Launcher #L102 launched Missile: #M3 To Ofakim
+01/09/14 00:50:10 Launcher #L102 is visible
+01/09/14 00:50:13 Trying to intercept Missile: #M3 To Ofakim
+01/09/14 00:50:13 Destructor type:iron_dome, 19 Intercepted Missile: #M3 To Ofakim
+01/09/14 00:50:13 Missile: #M3 To Ofakim was Intercepted
+01/09/14 00:50:14 Trying to destroy Launcher #L102
+01/09/14 00:50:14 Trying to destroy Launcher #L102
+01/09/14 00:50:14 Launcher #L102 Distroyed!!
+01/09/14 00:50:14 Launcher #L102 Distroyed!!
+01/09/14 00:50:23 War Ended

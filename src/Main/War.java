@@ -37,7 +37,7 @@ public class War {
 	private Timer WarTimer;
 	private boolean started;
 	private Statistics stats;
-	public static int WarTimeInSeconds;
+	public static int WarTimeInSeconds; //need to fix ********************************************
 	private static Logger logger;
 	private FileHandler fileHandler;
 	
@@ -60,7 +60,7 @@ public class War {
  * Inner method for creating file handler for war log
  */
 	private void addFileHandler() {
-		try{		
+		try{
 			fileHandler = new FileHandler(WAR_LOG_FILE);
 			
 			fileHandler.setFormatter(new WarFormatter());

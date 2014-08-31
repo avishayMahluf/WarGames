@@ -112,7 +112,7 @@ public class Launcher extends Thread {
 	 * @param Id custom id
 	 * @param IsHidden set launcher visibility 
 	 */
-	public Launcher(String Id, boolean IsHidden,Statistics stats) {
+	public Launcher(String Id, boolean IsHidden, Statistics stats) {
 		this.stats = stats;
 		isDestroyed = false;
 		Comparator<Missile> comparator = new Missile.MissileLaunchComparator();
@@ -212,8 +212,8 @@ public class Launcher extends Thread {
 	protected void peek() {
 		logger.log(Level.INFO, this.toString() + " is visible",this);
 		isHidden = false;
-		int peekTime = MIN_PEEK + (int) (Math.random() * MAX_PEEK);
-		Launcher currentLauncher = this;
+		final int peekTime = MIN_PEEK + (int) (Math.random() * MAX_PEEK);
+		final Launcher currentLauncher = this;
 		Thread launcherHidder = new Thread(){ 
 			@Override
 			public void run() {
@@ -244,10 +244,7 @@ public class Launcher extends Thread {
 				Missile m = missiles.peek();
 
 				if (m != null) {
-
-					if (m.getLauncTime() == War.WarTimeInSeconds
-							|| m.getLauncTime() == 0) {
-
+					if (m.getLauncTime() == War.WarTimeInSeconds || m.getLauncTime() == 0) {
 						m.setLock(Lock);
 						m.setStatistics(stats);
 						m.start();
@@ -256,30 +253,26 @@ public class Launcher extends Thread {
 						stats.addMissileLaunch();
 
 						synchronized (this) {
-							try {
-								peek();
-								wait();
-								missiles.poll();
-								if(m.getMissileState() == Missile.State.Hit){
-									logger.log(Level.INFO,m.toString() 
-											+" " + m.getMissileState().toString() 
-											+ "s and caused " + m.getDamage() 
-											+ " damage",this);
-								}else{
-									logger.log(Level.INFO,m.toString() 
-											+ " was " + m.getMissileState().toString(),this);
-								}
-							} catch (InterruptedException e) {
-
-								e.printStackTrace();
-								System.err.println("missile was interputed");
+							peek();
+							wait();
+							missiles.poll();//need to ask omri**************************************************
+							if(m.getMissileState() == Missile.State.Hit){
+								logger.log(Level.INFO,m.toString() 
+										+" " + m.getMissileState().toString() 
+										+ "s and caused " + m.getDamage() 
+										+ " damage",this);
+							} else {
+								logger.log(Level.INFO,m.toString() 
+										+ " was " + m.getMissileState().toString(),this);
 							}
 						}
 					} 
-
 				}
-				sleep(100);
-
+				sleep(100);//*************************** need to fix
+				
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+				System.err.println("missile was interputed");
 			} catch (Exception e) {
 				//	e.printStackTrace();
 				System.out.println(this.toString() + " reloads!");

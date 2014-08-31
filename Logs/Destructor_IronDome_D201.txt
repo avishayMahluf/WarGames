@@ -1,0 +1,5 @@
+01/09/14 00:50:08 Trying to intercept Missile: #M4 To Beer-Sheva
+01/09/14 00:50:10 Trying to intercept Missile: #M1 To Sderot
+01/09/14 00:50:10 Destructor type:iron_dome, 19 Intercepted Missile: #M1 To Sderot
+01/09/14 00:50:13 Trying to intercept Missile: #M3 To Ofakim
+01/09/14 00:50:13 Destructor type:iron_dome, 19 Intercepted Missile: #M3 To Ofakim

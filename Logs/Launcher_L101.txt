@@ -1,0 +1,4 @@
+01/09/14 00:50:07 Launcher #L101 is activated
+01/09/14 00:50:08 Launcher #L101 launched Missile: #M1 To Sderot
+01/09/14 00:50:08 Launcher #L101 is visible
+01/09/14 00:50:10 Missile: #M1 To Sderot was Intercepted

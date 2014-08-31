@@ -14,8 +14,6 @@ public class Destructor extends Thread {
 
 	private PriorityQueue<Launcher> destructdLauncher;
 	private PriorityQueue<Missile> destructdMissile;
-//	private Object LockMissile;
-//	private Object LockLuncher;
 	private String id;
 	private boolean isActive;
 	private Statistics stats;
@@ -30,8 +28,7 @@ public class Destructor extends Thread {
 	private Type dType;
 
 	public Destructor() {
-		this.id = DEAFULT_ID; // Default id
-//		LockMissile = new Object();
+		this.id = DEAFULT_ID; // Default id//************************************need to fix
 	}
 
 	
@@ -41,9 +38,7 @@ public class Destructor extends Thread {
 				(Comparator<? super Missile>) (new Missile.MissileDestructComparator()));
 		this.id = dId;
 		dType = Type.iron_dome;
-//		LockMissile = new Object();
 		isActive = true;
-
 	}
 
 	public Destructor(Type type) {
@@ -51,7 +46,6 @@ public class Destructor extends Thread {
 		destructdLauncher = new PriorityQueue<Launcher>(
 				(Comparator<? super Launcher>) (new Launcher.DestructComparator()));
 		this.dType = type;
-//		LockLuncher = new Object();
 		isActive = true;
 	}
 
@@ -61,7 +55,6 @@ public class Destructor extends Thread {
 				(Comparator<? super Missile>) (new Missile.MissileDestructComparator()));
 		this.id = dId;
 		dType = Type.iron_dome;
-//		LockMissile = new Object();
 		isActive = true;
 		this.stats = stats;
 		
@@ -84,7 +77,6 @@ public class Destructor extends Thread {
 		destructdLauncher = new PriorityQueue<Launcher>(
 				(Comparator<? super Launcher>) (new Launcher.DestructComparator()));
 		this.dType = type;
-//		LockLuncher = new Object();
 		isActive = true;
 		this.stats = stats;
 		
@@ -189,7 +181,7 @@ public class Destructor extends Thread {
 
 	@Override
 	public String toString() {
-		return "Destructor type:" + this.dType;
+		return "Destructor type:" + this.dType + ", " + this.getId();
 	}
 
 }

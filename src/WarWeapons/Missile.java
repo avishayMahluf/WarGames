@@ -73,9 +73,10 @@ public class Missile extends Thread {
 		return false;
 	}
 
-	public void setStatistics(Statistics s){
+	public void setStatistics(Statistics s) {
 		statistics = s;
 	}
+	
 	public static Missile getMissile(List<Launcher> lList, String id) {
 
 		Missile m = null;
@@ -159,14 +160,9 @@ public class Missile extends Thread {
 				if (missileState != State.Intercepted) {
 					missileState = State.Hit;
 
-					if(statistics!=null){
+					if(statistics != null){
 						statistics.addMissileHit();
-						try {
-							statistics.addDamage(damage);
-						} catch (Exception e) {
-
-							e.printStackTrace();
-						}
+						statistics.addDamage(damage);
 					}
 				} else {
 					logger.log(Level.INFO,this.toString() + " didnt hit target good job!",this);
@@ -184,6 +180,8 @@ public class Missile extends Thread {
 			synchronized (launcher) {
 				launcher.notify();
 			}
+		} catch (Exception e) {
+			
 		}
 
 	}

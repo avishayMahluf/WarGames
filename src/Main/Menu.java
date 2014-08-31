@@ -216,7 +216,7 @@ public class Menu {
 			System.out.print("Enter the index number to select destractor: #");
 			try{
 				indexNum = s.nextInt();
-				if (!(indexNum > 0 && indexNum <= war.getMissileLauncherDestructors().size())){
+				if ((indexNum <= 0 || indexNum > war.getMissileLauncherDestructors().size())){
 					System.err.println("Index was not found");
 					return;
 				}
@@ -224,8 +224,10 @@ public class Menu {
 			System.out.printf("Enter Launcher id: L");
 			try {
 				String lId = "L" + s.nextInt();
-				
-				war.getMissileLauncherDestructors().get(indexNum-1).addDestructLauncher(launchers.get(launchers.indexOf(new Launcher(lId)))); // a complicated way to do a easy thing...
+				Launcher target = launchers.get(launchers.indexOf(new Launcher(lId)));
+				Destructor destructor = war.getMissileLauncherDestructors().get(indexNum-1);
+				System.out.println(destructor.toString());
+				destructor.addDestructLauncher(target); // a complicated way to do a easy thing...
 				System.out.println("Target added to destructor");
 				
 			} catch (ArrayIndexOutOfBoundsException e) {

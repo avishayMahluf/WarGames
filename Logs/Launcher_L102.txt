@@ -1,0 +1,4 @@
+01/09/14 00:50:07 Launcher #L102 is activated
+01/09/14 00:50:10 Launcher #L102 launched Missile: #M3 To Ofakim
+01/09/14 00:50:10 Launcher #L102 is visible
+01/09/14 00:50:13 Missile: #M3 To Ofakim was Intercepted
